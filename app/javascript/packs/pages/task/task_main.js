@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import App from './TaskApp.vue'
-import router from './task_router'
+import router from './router'
 import vuetify from '@/plugin/vuetify'
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -8,6 +8,6 @@ document.addEventListener('DOMContentLoaded', () => {
   router,
   vuetify,
   render: h => h(App),
-  el: '#app'
+  el: '#task_app'
   }).$mount()
 })

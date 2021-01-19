@@ -11,6 +11,6 @@ document.addEventListener('DOMContentLoaded', () => {
     router,
     vuetify,
     render: h => h(App),
-    el: '#app'
+    el: '#home_app'
   }).$mount()
 })
