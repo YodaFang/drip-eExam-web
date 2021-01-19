@@ -14,16 +14,14 @@
         登录 / 注册
       </v-btn>
     </template>
-    <v-toolbar>
-      <v-tabs v-model="tabs" fixed-tabs>
-        <v-tab href="#sign-in-up-tabs-1" class="primary--text">
-          <span class="headline">登 录</span>
-        </v-tab>
-        <v-tab href="#sign-in-up-tabs-2" class="primary--text">
-          <span class="headline">注 册</span>
-        </v-tab>
-      </v-tabs>
-    </v-toolbar>
+    <v-tabs v-model="tabs" fixed-tabs>
+      <v-tab href="#sign-in-up-tabs-1" class="primary--text">
+        <span class="headline">登 录</span>
+      </v-tab>
+      <v-tab href="#sign-in-up-tabs-2" class="primary--text">
+        <span class="headline">注 册</span>
+      </v-tab>
+    </v-tabs>
     <v-tabs-items v-model="tabs">
       <v-tab-item value="sign-in-up-tabs-1">
         <v-card>
