@@ -1,38 +1,28 @@
 import axios from 'axios'
-import vue from 'vue'
+import store from '@/store'
 
 const request = function (loadtip, url, params, method) {
-  let loading
   if (loadtip) {
-    loading = vue.prototype.$loading({
-      lock: false,
-      text: '拼命加载中…',
-      spinner: 'el-icon-loading',
-      background: 'rgba(0, 0, 0, 0.5)'
-    })
+    store.isShowLoading = true;
   }
   let query = {
-    baseURL: '/api',
+    // baseURL: '/api',
     url: url,
     method: method,
     timeout: 5000,
     data: params,
   }
   return axios.request(query).then(res => {
-      if (loadtip) {
-        loading.close()
-      }
-      return Promise.resolve(res.data)
+      store.isShowLoading = false;
+      return Promise.resolve(res.data);
     }).catch(e => {
-      if (loadtip) {
-        loading.close()
-      }
-      return Promise.reject(e.message)
+      store.isShowLoading = false;
+      return Promise.reject(e);
     })
 }
 
 const post = function (url, params) {
-  return request(false, url, params, 'post')
+  return request(true, url, params, 'post')
 }
 
 const postWithOutLoadTip = function (url, params) {

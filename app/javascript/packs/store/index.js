@@ -1,47 +1,29 @@
 const store = {
-  debug: true,
-  state: {
-    message: 'Hello Vue!',
-    warningMessages: null,
-    errorMessages: null,
-    showLoading: false,
-    showAlerts: false,
-    userInfo: {},
-  },
-  setShowLoading(v){
-    this.state.showLoading = v;
-  },
-  isShowLoading(){
-    return this.state.showLoading;
-  },
+  __isDebug: true,
+  __data: {},
+  warningMessages: null,
+  errorMessages: null,
+  isShowLoading: false,
+  isShowAlerts: false,
+  isLogin: false,
+  userInfo: {},
   showErrors(message){
     this.warningMessages = null;
     this.errorMessages = message;
-    this.state.showAlerts = true;
+    this.isShowAlerts = true;
   },
   showWarnings(message){
     this.warningMessages = message;
     this.errorMessages = null;
-    this.state.showAlerts = true;
+    this.isShowAlerts = true;
   },
-  setShowAlerts(v){
-    this.state.showAlerts = v;
+
+  setValue(p, v) {
+    if (this.__isDebug) console.log('set action triggered with', v)
+    this.__data[p] = v
   },
-  isShowAlerts(){
-    return this.state.showAlerts;
-  },
-  getWarningMessages(){
-    return this.state.warningMessages;
-  },
-  getErrorMessages(){
-    return this.state.errorMessages;
-  },
-  set(p, v) {
-    if (this.debug) console.log('set action triggered with', v)
-    this.state[p] = v
-  },
-  get(p) {
-    return this.state[p]
+  getValue(p) {
+    return this.__data[p]
   }
 }
 

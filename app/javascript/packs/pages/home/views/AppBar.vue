@@ -25,7 +25,7 @@
       outlined
       to="/user"
       >
-        Hi {{ userInfo.name }}
+      Hi {{ userInfo.name }}
       </v-chip>
     </v-app-bar>
 </template>
@@ -42,7 +42,10 @@ export default {
   }),
   computed: {
     userInfo(){
-      return this.$root.$data.get('userInfo')
+      return this.$root.$data.userInfo;
+    },
+    isLogin(){
+      return this.$root.$data.isLogin;
     }
   }
 }

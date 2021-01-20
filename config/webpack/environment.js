@@ -47,8 +47,8 @@ environment.config.merge(resolveConfig)
 Object.keys(environment.entry.toObject()).forEach((key) => {
   environment.entry.delete(key)
 })
+environment.entry.set('application', join(sourcePath, '/application.js'))
 environment.entry.set('home_vue', join(sourcePath, '/pages/home/home_main.js'))
 environment.entry.set('task_vue', join(sourcePath, '/pages/task/task_main.js'))
 
-console.log(environment)
 module.exports = environment

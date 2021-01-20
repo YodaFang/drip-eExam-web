@@ -138,15 +138,14 @@ export default {
       if(!this.$refs.signInForm.validate()){
         return false;
       }
-      this.$root.$data.setShowLoading(true);
       const _this = this
       userApi.signIn({login: this.login, password: this.password}).then((res) => {
-        this.$root.$data.setShowLoading(false);
         if(res.success){
           _this.showModal = false
-          this.$root.$data.set('userInfo', res.user_info)
+          this.$root.$data.isLogin = true;
+          this.$root.$data.userInfo = res.user_info;
         } else {
-          this.$root.$data.setShowAlerts(true);
+          this.$root.$data.showWarnings('登录账号或者密码错误！');
         }
       })
     },
@@ -154,7 +153,6 @@ export default {
       if(!this.$refs.signUpForm.validate()){
         return false;
       }
-      this.$root.$data.setShowLoading(true);
     }
   }
 }

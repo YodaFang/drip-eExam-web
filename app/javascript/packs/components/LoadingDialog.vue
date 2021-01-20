@@ -17,10 +17,10 @@ export default {
   computed: {
     isShowLoading:{
       get(){
-        return this.$root.$data.isShowLoading();
+        return this.$root.$data.isShowLoading;
       },
       set(v){
-        this.$root.$data.setShowLoading(v);
+        this.$root.$data.isShowLoading = v;
       }
     }
   }

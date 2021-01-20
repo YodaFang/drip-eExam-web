@@ -4,7 +4,6 @@ import router from './router'
 import vuetify from '@/plugin/vuetify'
 import store from '@/store'
 
-
 document.addEventListener('DOMContentLoaded', () => {
   new Vue({
     data: store,

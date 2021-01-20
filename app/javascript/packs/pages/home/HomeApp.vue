@@ -6,10 +6,10 @@
       <v-card class="mx-auto" max-width="1260">
         <router-view />
       </v-card>
-      <LoadingDialog />
     </v-main>
     <AppFooterBar />
     <AppSettings />
+    <LoadingDialog />
   </v-app>
 </template>
 

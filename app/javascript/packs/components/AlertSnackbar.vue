@@ -28,19 +28,19 @@ export default {
   computed: {
     isShowAlerts:{
       get(){
-        return this.$root.$data.isShowAlerts();
+        return this.$root.$data.isShowAlerts;
       },
       set(v){
-        this.$root.$data.setShowAlerts(v);
+        this.$root.$data.isShowAlerts = v;
       }
     }
   },
   methods: {
     errorMessages() {
-      return this.$root.$data.getErrorMessages()
+      return this.$root.$data.errorMessages
     },
     warningMessages() {
-      return this.$root.$data.getWarningMessages()
+      return this.$root.$data.warningMessages
     },
   }
 }
