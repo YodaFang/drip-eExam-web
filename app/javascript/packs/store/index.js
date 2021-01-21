@@ -1,20 +1,15 @@
+import user from '@/store/user'
+
 const store = {
   __isDebug: true,
   __data: {},
-  warningMessages: null,
+  user: null,
   errorMessages: null,
   isShowLoading: false,
   isShowAlerts: false,
-  isLogin: false,
-  userInfo: {},
+  maxWidth: 1260,
   showErrors(message){
-    this.warningMessages = null;
     this.errorMessages = message;
-    this.isShowAlerts = true;
-  },
-  showWarnings(message){
-    this.warningMessages = message;
-    this.errorMessages = null;
     this.isShowAlerts = true;
   },
 

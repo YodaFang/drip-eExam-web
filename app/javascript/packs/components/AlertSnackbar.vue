@@ -7,7 +7,6 @@
       top
     >
       <v-alert type="error"> {{ errorMessages() }} </v-alert>
-      <v-alert type="warning"> {{ warningMessages() }} </v-alert>
       <template v-slot:action="{ attrs }">
         <v-btn
           color="red"
@@ -38,9 +37,6 @@ export default {
   methods: {
     errorMessages() {
       return this.$root.$data.errorMessages
-    },
-    warningMessages() {
-      return this.$root.$data.warningMessages
     },
   }
 }

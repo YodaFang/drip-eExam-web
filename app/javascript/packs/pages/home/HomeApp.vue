@@ -3,7 +3,7 @@
     <AppHeaderBar />
     <v-main>
       <AlertSnackbar />
-      <v-card class="mx-auto" max-width="1260">
+      <v-card class="mx-auto" :max-width="mainMaxWidth()">
         <router-view />
       </v-card>
     </v-main>
@@ -14,8 +14,12 @@
 </template>
 
 <script>
+
 export default {
   name: 'HomeApp',
+  data: () => ({
+    //mainMaxWidth: this.$root.$data.maxWidth,
+  }),
   components: {
     AppHeaderBar: () => import('./views/AppBar'),
     AppSettings: () => import('./views/Settings'),
@@ -23,9 +27,15 @@ export default {
     LoadingDialog: () => import('@/components/LoadingDialog'),
     AlertSnackbar: () => import('@/components/AlertSnackbar'),
   },
-  mounted() {
+  beforeCreate(){
   },
-  computed: {
+  mounted(){
+    this.$root.$data.user.init();
+  },
+  methods: {
+    mainMaxWidth() {
+      return this.$root.$data.maxWidth;
+    }
   }
 }
 </script>

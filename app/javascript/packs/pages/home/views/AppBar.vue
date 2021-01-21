@@ -12,25 +12,33 @@
       <v-spacer></v-spacer>
 
       <v-btn icon>
-        <v-icon>mdi-heart</v-icon>
-      </v-btn>
-
-      <v-btn icon>
         <v-icon>mdi-magnify</v-icon>
       </v-btn>
 
-      <SignInUpModal />
+      <SignInUpModal v-if="!isLogin"/>
 
-      <v-chip
-      outlined
-      to="/user"
-      >
-      Hi {{ userInfo.name }}
-      </v-chip>
+      <v-menu v-else offset-y >
+        <template v-slot:activator="{ on, attrs }">
+          <v-chip v-bind="attrs" v-on="on" outlined class="font-weight-bold">
+            <v-icon left>mdi-account-circle-outline</v-icon>
+            你好 {{ userName }}
+            <v-icon right>mdi-dots-vertical</v-icon>
+          </v-chip>
+        </template>
+        <v-list link>
+          <v-list-item to="/user">
+            <v-list-item-title>账户信息</v-list-item-title>
+          </v-list-item>
+          <v-list-item @click="logout()">
+            <v-list-item-title>退出</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
     </v-app-bar>
 </template>
 
 <script>
+
 export default {
   name: 'AppHeaderBar',
 
@@ -40,12 +48,19 @@ export default {
 
   data: () => ({
   }),
+  mounted() {
+  },
   computed: {
-    userInfo(){
-      return this.$root.$data.userInfo;
+    userName(){
+      return this.$root.$data.user.name();
     },
     isLogin(){
-      return this.$root.$data.isLogin;
+      return this.userName && this.userName.length > 0
+    }
+  },
+  methods: {
+    logout(){
+      this.$root.$data.user.logout();
     }
   }
 }

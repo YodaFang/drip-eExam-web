@@ -11,11 +11,12 @@ module Drip
       render status: status_code, json: paylaod
     end
 
-    def render_success_payload(paylaod, status_code = 200)
+    def render_success_payload(paylaod = {}, status_code = 200)
       render status: status_code, json: { success: true }.merge(paylaod)
     end
 
-    def render_failure_with_messages(messages, status_code)
+    # 需要在页面中显示错误信息情况调用此方法
+    def render_failure_with_messages(messages, status_code = 488)
       render status: status_code, json: { success: false, errors: messages }
     end
 

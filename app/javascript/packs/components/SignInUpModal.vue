@@ -5,14 +5,9 @@
     transition="dialog-top-transition"
   >
     <template v-slot:activator="{ on, attrs }">
-      <v-btn
-        text
-        color="white"
-        v-bind="attrs"
-        v-on="on"
-      >
+      <v-chip outlined v-bind="attrs" v-on="on" class="font-weight-bold">
         登录 / 注册
-      </v-btn>
+      </v-chip>
     </template>
     <v-tabs v-model="tabs" fixed-tabs>
       <v-tab href="#sign-in-up-tabs-1" class="primary--text">
@@ -35,17 +30,19 @@
                 label="账 号*"
                 hint="通常是你的手机号"
                 v-model="login"
-                :rules="[rules().required]"
+                :rules="[rules().required, rules().max50Characters]"
                 name="login"
+                clearable
               ></v-text-field>
               <v-text-field
                 v-model="password"
                 :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
-                :rules="[rules().required]"
+                :rules="[rules().required, rules().max50Characters]"
                 :type="showPassword ? 'text' : 'password'"
                 name="password"
                 label="密 码*"
                 hint="At least 8 characters"
+                clearable
                 @click:append="showPassword = !showPassword"
               ></v-text-field>
               <small>* 项为必须录入项</small>
@@ -73,12 +70,17 @@
                 hint="给你账号取个名字吧"
                 v-model="name"
                 :rules="[rules().required, rules().max50Characters]"
+                clearable
               ></v-text-field>
               <v-text-field
                 label="账 号*"
                 hint="通常是你的电子邮箱地址"
+                ref="loginField"
+                :error-messages="loginError"
                 v-model="login"
                 :rules="[rules().required, rules().max50Characters]"
+                clearable
+                @blur="accountCheck"
               ></v-text-field>
               <v-text-field
                 v-model="password"
@@ -87,6 +89,7 @@
                 :type="showPassword ? 'text' : 'password'"
                 label="密 码*"
                 hint="建议8位以上"
+                clearable
                 @click:append="showPassword = !showPassword"
               ></v-text-field>
               <v-text-field
@@ -96,6 +99,7 @@
                 :type="showPassword ? 'text' : 'password'"
                 label="密 码 确 认*"
                 hint="须与密码保持一致"
+                clearable
                 @click:append="showPassword = !showPassword"
               ></v-text-field>
               <small>* 项为必须录入项</small>
@@ -115,7 +119,6 @@
 </template>
 
 <script>
-import userApi from  '@/api/user'
 import validateRules from  '@/utils/validate_rules'
 
 export default {
@@ -129,30 +132,38 @@ export default {
     login: '',
     password: '',
     passwordConfirm: '',
+    loginError: '',
   }),
   methods: {
     rules(){
       return validateRules;
     },
     signIn() {
-      if(!this.$refs.signInForm.validate()){
-        return false;
-      }
+      if(!this.$refs.signInForm.validate()) return false;
+
       const _this = this
-      userApi.signIn({login: this.login, password: this.password}).then((res) => {
-        if(res.success){
-          _this.showModal = false
-          this.$root.$data.isLogin = true;
-          this.$root.$data.userInfo = res.user_info;
-        } else {
-          this.$root.$data.showWarnings('登录账号或者密码错误！');
+      this.$root.$data.user.loginByAcount(
+        { login: this.login, password: this.password },
+        (success) => {
+          if(success) _this.showModal = false;
         }
-      })
+      );
+    },
+    accountCheck() {
+      if(!this.$refs.loginField.validate()) return false;
+
+      this.$root.$data.user.accountCheck(this.login);
     },
     signUp() {
-      if(!this.$refs.signUpForm.validate()){
-        return false;
-      }
+      if(!this.$refs.signUpForm.validate()) return false;
+
+      const _this = this
+      this.$root.$data.user.register(
+        { name: this.name, login: this.login, password: this.password, passwordConfirm: this.passwordConfirm },
+        (success) => {
+          if(success) _this.showModal = false;
+        }
+      );
     }
   }
 }

@@ -1,10 +1,8 @@
 import axios from 'axios'
-import store from '@/store'
+import store from '@/store/index'
 
-const request = function (loadtip, url, params, method) {
-  if (loadtip) {
-    store.isShowLoading = true;
-  }
+const request = function(loadtip, url, params, method) {
+  if (loadtip) store.isShowLoading = true;
   let query = {
     // baseURL: '/api',
     url: url,
@@ -13,33 +11,38 @@ const request = function (loadtip, url, params, method) {
     data: params,
   }
   return axios.request(query).then(res => {
-      store.isShowLoading = false;
+      if (loadtip) store.isShowLoading = false;
       return Promise.resolve(res.data);
-    }).catch(e => {
-      store.isShowLoading = false;
-      return Promise.reject(e);
+    }).catch(err => {
+      if (loadtip) store.isShowLoading = false;
+      if(err.response && err.response.status == 488){
+        if(err.response.data.errors) store.showErrors(err.response.data.errors)
+      } else {
+        console.log(err)
+        console.log(err.response)
+      }
+      return Promise.reject(err);
     })
 }
 
-const post = function (url, params) {
-  return request(true, url, params, 'post')
-}
-
-const postWithOutLoadTip = function (url, params) {
-  return request(false, url, params, 'post')
-}
-
-const get = function (url, params) {
-  return request(false, url, params, 'get')
-}
-
-const form = function (url, params) {
-  return request(false, url, params, 'post', 'multipart/form-data')
-}
-
-export {
-  post,
-  postWithOutLoadTip,
-  get,
-  form
+export default {
+  post: function(url, params) {
+    return request(true, url, params, 'post')
+  },
+  postWithOutLoadTip: function(url, params) {
+    return request(false, url, params, 'post')
+  },
+  get: function(url, params) {
+    return axios.get(url, {params: params}).then(res => {
+      return Promise.resolve(res.data);
+    }).catch(err => {
+      if(err.response && err.response.status == 488){
+        if(err.response.data.errors) store.showErrors(err.response.data.errors)
+      } else {
+        console.log(err)
+        console.log(err.response)
+      }
+      return Promise.reject(err);
+    })
+  }
 }
