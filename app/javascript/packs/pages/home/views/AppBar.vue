@@ -1,9 +1,8 @@
 <template>
-    <v-app-bar app dense fixed dark
+    <v-app-bar app dense fixed
       id="app-bar-header"
       max-height="40"
       class="mx-auto"
-      color="blue lighten-1"
     >
       <v-icon>mdi-water-outline</v-icon>
 
@@ -15,6 +14,7 @@
         <v-icon>mdi-magnify</v-icon>
       </v-btn>
 
+      <UserProfileModal />
       <SignInUpModal v-if="!isLogin"/>
 
       <v-menu v-else offset-y >
@@ -44,6 +44,7 @@ export default {
 
   components: {
       SignInUpModal: () => import('@/components/SignInUpModal'),
+      UserProfileModal: () => import('@/components/UserProfileModal'),
   },
 
   data: () => ({

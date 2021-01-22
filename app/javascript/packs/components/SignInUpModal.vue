@@ -1,7 +1,7 @@
 <template>
   <v-dialog
     v-model="showModal"
-    max-width="500px"
+    max-width="460px"
     transition="dialog-top-transition"
   >
     <template v-slot:activator="{ on, attrs }">
@@ -47,11 +47,9 @@
               ></v-text-field>
               <small>* 项为必须录入项</small>
               <v-card-actions>
-                <v-spacer></v-spacer>
                 <v-btn block color="success" dark @click="signIn()">
                   <span class="text-h5">登 录</span>
                 </v-btn>
-                <v-spacer></v-spacer>
               </v-card-actions>
             </v-form>
           </v-card-text>

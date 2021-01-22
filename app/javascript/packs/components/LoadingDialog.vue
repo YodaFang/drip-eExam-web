@@ -1,14 +1,14 @@
 <template>
-  <v-dialog v-model="isShowLoading" fullscreen>
-  <v-container fluid fill-height style="background-color: rgba(255, 255, 255, 0.5);">
-    <v-layout justify-center align-center>
+  <div class="text-center">
+    <v-overlay :value="isShowLoading">
       <v-progress-circular
         indeterminate
-        color="primary">
-      </v-progress-circular>
-    </v-layout>
-  </v-container>
-  </v-dialog>
+        color="blue light-4"
+        width="10"
+        size="88"
+      ></v-progress-circular>
+    </v-overlay>
+  </div>
 </template>
 
 <script>

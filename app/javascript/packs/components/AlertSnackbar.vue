@@ -2,7 +2,7 @@
   <div class="text-center">
     <v-snackbar
       v-model="isShowAlerts"
-      timeout="-1"
+      timeout="3000"
       :multi-line="true"
       top
     >
