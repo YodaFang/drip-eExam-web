@@ -1,12 +1,7 @@
 <template>
   <div class="text-center">
     <v-overlay :value="isShowLoading">
-      <v-progress-circular
-        indeterminate
-        color="blue light-4"
-        width="10"
-        size="88"
-      ></v-progress-circular>
+      <v-progress-circular indeterminate color="blue light-4" width="10px" size="88px" />
     </v-overlay>
   </div>
 </template>

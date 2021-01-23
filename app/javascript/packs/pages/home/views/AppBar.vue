@@ -1,7 +1,7 @@
 <template>
     <v-app-bar app dense fixed
       id="app-bar-header"
-      max-height="40"
+      max-height="40px"
       class="mx-auto"
     >
       <v-icon>mdi-water-outline</v-icon>

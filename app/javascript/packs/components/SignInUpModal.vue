@@ -10,7 +10,7 @@
       </v-chip>
     </template>
     <v-tabs v-model="tabs" fixed-tabs>
-      <v-tab href="#sign-in-up-tabs-1" class="primary--text">
+      <v-tab href="#sign-in-up-tabs-1" class="primary--text" >
         <span class="headline">登 录</span>
       </v-tab>
       <v-tab href="#sign-in-up-tabs-2" class="primary--text">
