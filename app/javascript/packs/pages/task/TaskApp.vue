@@ -1,202 +1,76 @@
 <template>
-  <v-app id="inspire">
-    <v-system-bar app dark color="blue lighten-1">
-      <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
-      <v-spacer></v-spacer>
-      <h3 class="white--text">任务 - 测试  已完成 12/30</h3>
-      <v-spacer></v-spacer>
-      <h3 class="purple--text">剩余 30 分钟</h3>
-    </v-system-bar>
-
-    <v-navigation-drawer
-      v-model="drawer"
-      app
-      color="grey lighten-4"
-    >
-    <v-list>
-        <v-list-group
-          :value="true"
-          no-action
-          sub-group
-        >
-          <template v-slot:activator>
-            <v-list-item-content>
-              <v-list-item-title>判断题</v-list-item-title>
-            </v-list-item-content>
-          </template>
-
-          <v-list-item
-            v-for="([title], i) in admins"
-            :key="i"
-            link
-          >
-            <v-badge
-              color="primary"
-              icon="mdi-check"
-            >
-            <v-list-item-title v-text="title"></v-list-item-title>
-            </v-badge>
-            <v-list-item-icon>
-              <v-icon color="primary">mdi-check</v-icon>
-            </v-list-item-icon>
-          </v-list-item>
-        </v-list-group>
-
-        <v-list-group
-          :value="true"
-          no-action
-          sub-group
-        >
-          <template v-slot:activator>
-            <v-list-item-content>
-              <v-list-item-title>选择题</v-list-item-title>
-            </v-list-item-content>
-          </template>
-
-          <v-list-item
-            v-for="([title, icon], i) in cruds"
-            :key="i"
-            link
-          >
-            <v-list-item-title v-text="title"></v-list-item-title>
-
-            <v-list-item-icon>
-              <v-icon v-text="icon"></v-icon>
-            </v-list-item-icon>
-          </v-list-item>
-        </v-list-group>
-    </v-list>
-    </v-navigation-drawer>
-
-    <v-main>
-      <v-container
-        class="py-8 px-6 mx-auto"
-        fluid
+<v-app id="inspire">
+  <v-system-bar app dark color="blue lighten-1">
+    <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
+    <v-spacer></v-spacer>
+    <h3 class="white--text">任务 - 测试  已完成 12/30</h3>
+    <v-spacer></v-spacer>
+  </v-system-bar>
+  <v-navigation-drawer v-model="drawer" app color="grey lighten-4">
+    <v-list flat v-for="(s, j) in listGroups()" :key="j">
+      <v-list-group
+        v-if="subListItems(s).length > 0"
       >
-        <v-card color="lighten-2"
-        >
-        <v-breadcrumbs :items="items" />
-        <v-card-title class="headline gray lighten-3">
-         Search for Public APIs
-        </v-card-title>
-         <v-radio-group
-         class="px-6"
-      v-model="radios"
-    >
-      <v-radio
-        label="Radio 1"
-        value="radio-1"
-      ></v-radio>
-      <v-radio
-        label="Radio 2"
-        value="radio-2"
-      ></v-radio>
-    </v-radio-group>
-        </v-card>
-        <v-card color="lighten-2"
-        >
-        <v-breadcrumbs :items="items" />
-        <v-card-title class="headline gray lighten-3">
-         Search for Public APIs
-        </v-card-title>
-         <v-radio-group
-         class="px-6"
-      v-model="radios"
-    >
-      <v-radio
-        label="Radio 1"
-        value="radio-1"
-      ></v-radio>
-      <v-radio
-        label="Radio 2"
-        value="radio-2"
-      ></v-radio>
-    </v-radio-group>
-        </v-card>
-        <v-card color="lighten-2"
-        >
-        <v-breadcrumbs :items="items" />
-        <v-card-title class="headline gray lighten-3">
-         Search for Public APIs
-        </v-card-title>
-         <v-radio-group
-         class="px-6"
-      v-model="radios"
-    >
-      <v-radio
-        label="Radio 1"
-        value="radio-1"
-      ></v-radio>
-      <v-radio
-        label="Radio 2"
-        value="radio-2"
-      ></v-radio>
-    </v-radio-group>
-        </v-card>
-        <v-card color="lighten-2"
-        >
-        <v-breadcrumbs :items="items" />
-        <v-card-title class="headline gray lighten-3">
-         Search for Public APIs
-        </v-card-title>
-         <v-radio-group
-         class="px-6"
-      v-model="radios"
-    >
-      <v-radio
-        label="Radio 1"
-        value="radio-1"
-      ></v-radio>
-      <v-radio
-        label="Radio 2"
-        value="radio-2"
-      ></v-radio>
-    </v-radio-group>
-        </v-card>
-        <v-card color="lighten-2"
-        >
-        <v-breadcrumbs :items="items" />
-        <v-card-title class="headline gray lighten-3">
-         Search for Public APIs
-        </v-card-title>
-         <v-radio-group
-         class="px-6"
-      v-model="radios"
-    >
-      <v-radio
-        label="Radio 1"
-        value="radio-1"
-      ></v-radio>
-      <v-radio
-        label="Radio 2"
-        value="radio-2"
-      ></v-radio>
-    </v-radio-group>
-        </v-card>
-        <v-card color="lighten-2"
-        >
-        <v-breadcrumbs :items="items" />
-        <v-card-title class="headline gray lighten-3">
-         Search for Public APIs
-        </v-card-title>
-         <v-radio-group
-         class="px-6"
-      v-model="radios"
-    >
-      <v-radio
-        label="Radio 1"
-        value="radio-1"
-      ></v-radio>
-      <v-radio
-        label="Radio 2"
-        value="radio-2"
-      ></v-radio>
-    </v-radio-group>
-        </v-card>
-        <v-card height="100">
-        </v-card>
-      </v-container>
-    </v-main>
+        <template v-slot:activator>
+          <v-list-item>
+            <v-list-item-title v-text="s.title"></v-list-item-title>
+          </v-list-item>
+        </template>
+        <v-list-item-group>
+          <v-list-item
+            v-for="(c, i) in subListItems(s)"
+            :key="i"
+            link
+            dense
+            class="ml-6" 
+          >
+            <v-list-item-title v-text="c.title"></v-list-item-title>
+            <v-list-item-icon>
+              <v-icon>mdi-check</v-icon>
+            </v-list-item-icon>
+          </v-list-item>
+        </v-list-item-group>
+      </v-list-group>
+      <v-list-item-group v-else  v-model="selectedItem" color="success">
+        <v-list-item link>
+          <v-list-item-title class="ml-4" v-text="s.title"></v-list-item-title>
+        </v-list-item>
+      </v-list-item-group>
+    </v-list>
+  </v-navigation-drawer>
+  <v-main>
+    <v-card flat max-width="580px">
+      <v-breadcrumbs :items="items"></v-breadcrumbs>
+      <v-divider></v-divider>
+      <v-card-text>
+        <span class="headline">Search for Public APIs</span>
+          <v-radio-group v-model="ex8">
+            <v-radio label="primary" color="primary" value="primary"></v-radio>
+            <v-radio label="secondary" color="secondary" value="secondary"></v-radio>
+            <v-radio label="success" color="success" value="success"></v-radio>
+            <v-radio label="info" color="info" value="info"></v-radio>
+          </v-radio-group>
+      </v-card-text>
+    </v-card>
+    <v-card flat>
+      <v-breadcrumbs :items="items"></v-breadcrumbs>
+      <v-divider></v-divider>
+      <v-card-text v-for="(item, index) in wordList()" :key="index">
+        <v-row class="mb-0" v-on:dblclick="show = !show">
+          <v-col cols="10"><p class="title"> <strong>{{ item[0] }}</strong> {{ item[1] }} <v-divider vertical/>{{ item[2] }} </p></v-col>
+          <v-col cols="2" align="right"><v-icon @click="show = !show">mdi-dots-vertical</v-icon></v-col>
+        </v-row>
+        <v-expand-transition >
+          <div v-show="show">
+            <v-card-text>
+              I'm a thing. But, like most politicians, he promised more than he could deliver. You won't have time for sleeping, soldier, not with all the bed making you'll be doing. Then we'll go with that data file! Hey, you add a one and two zeros to that or we walk! You're going to do his laundry? I've got to find a way to escape.
+            </v-card-text>
+          </div>
+        </v-expand-transition>
+        <v-divider></v-divider>
+      </v-card-text>
+    </v-card>
+  </v-main>
   <v-footer
     color="transparent"
     max-width="190"
@@ -210,82 +84,69 @@
       no-gutters
     >
       <v-progress-circular
-      :rotate="360"
+      :rotate="90"
       :size="85"
       :width="10"
-      :value="value"
+      :value="value1"
       color="primary"
     >
-      {{ value }}
+      {{ value1 }}
     </v-progress-circular>
     <v-spacer></v-spacer>
     <v-progress-circular
-      :rotate="360"
+      :rotate="0"
       :size="85"
       :width="10"
-      :value="value"
+      :value="value2"
       color="purple"
     >
-      {{ value }} / 100
+      {{ value2 }} / 100
     </v-progress-circular>
     </v-row>
   </v-footer>
-  
-  </v-app>
+</v-app>
 </template>
 
 <script>
-  export default {
-    data: () => ({
-      cards: ['Today', 'Yesterday'],
+export default {
+  data () {
+    return {
+      show: false,
+      selectedItem: 1,
       drawer: null,
-      admins: [
-        ['1', 'mdi-check-circle'],
-        ['2', 'mdi-cog-outline'],
-        ['1', 'mdi-check-circle'],
-        ['2', 'mdi-cog-outline'],
-        ['1', 'mdi-check-circle'],
-        ['2', 'mdi-cog-outline'],
-        ['1', 'mdi-check-circle'],
-        ['2', 'mdi-cog-outline'],
-        ['1', 'mdi-check-circle'],
-        ['2', 'mdi-cog-outline'],
-      ],
-      cruds: [
-        ['1', 'mdi-plus-outline'],
-        ['2', 'mdi-file-outline'],
-        ['3', 'mdi-update'],
-        ['4', 'mdi-delete'],
-        ['1', 'mdi-plus-outline'],
-        ['2', 'mdi-file-outline'],
-        ['3', 'mdi-update'],
-        ['4', 'mdi-delete'],
-      ],
+      ex8: 'primary',
+      value1: 100,
+      value2: 0,
       items: [
         {
-          text: '单选',
-          disabled: false,
-          href: 'breadcrumbs_dashboard',
+          text: '单选测试',
+          disabled: true,
         },
         {
           text: '1',
-          disabled: false,
-          href: 'breadcrumbs_link_1',
+          disabled: true,
         },
       ],
-      interval: {},
-      value: 0,
-    }),
-    beforeDestroy () {
-      clearInterval(this.interval)
+    }
+  },
+  mounted () {
+    this.interval = setInterval(() => {
+      if (this.value1 === 0) {
+        return (this.value1 = 100)
+      }
+      this.value1 -= 10
+    }, 1000)
+  },
+  methods: {
+    listGroups() {
+      return this.$root.$data.sections;
     },
-    mounted () {
-      this.interval = setInterval(() => {
-        if (this.value === 100) {
-          return (this.value = 0)
-        }
-        this.value += 10
-      }, 1000)
+    subListItems(section) {
+      return section.items && section.items.slice(1);
     },
-  }
+    wordList(section) {
+      return this.$root.$data.sections[0].items[0].content
+    }
+  },
+}
 </script>
