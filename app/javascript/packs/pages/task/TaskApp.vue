@@ -1,5 +1,5 @@
 <template>
-<v-app id="inspire">
+<v-app class="mx-auto" id="inspire">
   <v-system-bar app dark color="blue lighten-1">
     <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
     <v-spacer></v-spacer>
@@ -7,23 +7,15 @@
     <v-spacer></v-spacer>
   </v-system-bar>
   <v-navigation-drawer v-model="drawer" app color="grey lighten-4">
-    <v-list flat v-for="(s, j) in listGroups()" :key="j">
-      <v-list-group
-        v-if="subListItems(s).length > 0"
-      >
+    <v-list flat><template v-for="(s, j) in listGroups()">
+      <v-list-group :key="j" v-if="subListItems(s).length > 0" >
         <template v-slot:activator>
           <v-list-item>
             <v-list-item-title v-text="s.title"></v-list-item-title>
           </v-list-item>
         </template>
         <v-list-item-group>
-          <v-list-item
-            v-for="(c, i) in subListItems(s)"
-            :key="i"
-            link
-            dense
-            class="ml-6" 
-          >
+          <v-list-item v-for="(c, i) in subListItems(s)" :key="i" link dense class="ml-6" >
             <v-list-item-title v-text="c.title"></v-list-item-title>
             <v-list-item-icon>
               <v-icon>mdi-check</v-icon>
@@ -31,19 +23,19 @@
           </v-list-item>
         </v-list-item-group>
       </v-list-group>
-      <v-list-item-group v-else  v-model="selectedItem" color="success">
-        <v-list-item link>
+      <v-list-item-group :key="j" v-else  v-model="selectedItem" color="success">
+        <v-list-item>
           <v-list-item-title class="ml-4" v-text="s.title"></v-list-item-title>
         </v-list-item>
       </v-list-item-group>
-    </v-list>
+    </template></v-list>
   </v-navigation-drawer>
   <v-main>
-    <v-card flat max-width="580px">
-      <v-breadcrumbs :items="items"></v-breadcrumbs>
-      <v-divider></v-divider>
+    <v-breadcrumbs :items="items"></v-breadcrumbs>
+    <v-divider></v-divider>
+    <v-card flat>
       <v-card-text>
-        <span class="headline">Search for Public APIs</span>
+        <span class="headline" ><v-badge icon="mdi-check" left> </v-badge>Search for Public APIs</span>
           <v-radio-group v-model="ex8">
             <v-radio label="primary" color="primary" value="primary"></v-radio>
             <v-radio label="secondary" color="secondary" value="secondary"></v-radio>
@@ -71,37 +63,15 @@
       </v-card-text>
     </v-card>
   </v-main>
-  <v-footer
-    color="transparent"
-    max-width="190"
-    class="mx-auto"
-    padless
-    fixed
-  >
-    <v-row
-      justify="center"
-      color="rgba(0, 0, 0, .3)"
-      no-gutters
-    >
-      <v-progress-circular
-      :rotate="90"
-      :size="85"
-      :width="10"
-      :value="value1"
-      color="primary"
-    >
+  <v-footer color="transparent" max-width="190" class="mx-auto" padless fixed>
+    <v-row justify="center" color="rgba(0, 0, 0, .3)" no-gutters>
+      <v-progress-circular :rotate="90" :size="85" :width="10" :value="value1" color="primary">
       {{ value1 }}
-    </v-progress-circular>
-    <v-spacer></v-spacer>
-    <v-progress-circular
-      :rotate="0"
-      :size="85"
-      :width="10"
-      :value="value2"
-      color="purple"
-    >
-      {{ value2 }} / 100
-    </v-progress-circular>
+      </v-progress-circular>
+      <v-spacer></v-spacer>
+      <v-progress-circular :rotate="0" :size="85" :width="10" :value="value2" color="purple">
+        {{ value2 }} / 100
+      </v-progress-circular>
     </v-row>
   </v-footer>
 </v-app>
@@ -112,7 +82,7 @@ export default {
   data () {
     return {
       show: false,
-      selectedItem: 1,
+      selectedItem: 0,
       drawer: null,
       ex8: 'primary',
       value1: 100,

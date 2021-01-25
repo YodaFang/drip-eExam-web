@@ -201,12 +201,7 @@
         </v-card-text>
         <v-divider></v-divider>
         <v-card-actions>
-          <v-btn
-            color="success"
-            dark
-            block
-            @click="showModal = false"
-          >
+          <v-btn color="success" dark block @click="showModal = false" >
             更 新
           </v-btn>
         </v-card-actions>

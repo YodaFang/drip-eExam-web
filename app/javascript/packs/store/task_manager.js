@@ -39,8 +39,26 @@ const taskManager = {
     ]},
   ],
   __data: {},
-  __name: '',
-  __login: '',
+  __current_sec: 0,
+  __current_idx: 0,
+
+  init(p, v) {
+  },
+
+  setCurrent(p, v) {
+  },
+
+  next(p, v) {
+  },
+
+  reserve(p, v) {
+  },
+
+  submitAnswer(p, v) {
+  },
+
+  submitTask(p, v) {
+  },
 
   setValue(p, v) {
     if (this.__isDebug) console.log('set action triggered with', v)
