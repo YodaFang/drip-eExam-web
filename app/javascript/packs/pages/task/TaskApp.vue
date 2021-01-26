@@ -7,61 +7,34 @@
     <v-spacer></v-spacer>
   </v-system-bar>
   <v-navigation-drawer v-model="drawer" app color="grey lighten-4">
-    <v-list flat><template v-for="(s, j) in listGroups()">
-      <v-list-group :key="j" v-if="subListItems(s).length > 0" >
-        <template v-slot:activator>
-          <v-list-item>
-            <v-list-item-title v-text="s.title"></v-list-item-title>
+    <v-list flat>
+      <v-list-item-group v-model="selectedItem" color="success">
+        <template v-for="(s, j) in sectionList()">
+          <v-list-group v-if="subListItems(s).length > 1" :key="j" :value="true" no-action>
+            <template v-slot:activator>
+              <v-list-item disabled inactive :link="false" :value="99999">
+                <v-list-item-title><strong>{{s.title}}</strong></v-list-item-title>
+              </v-list-item>
+            </template>
+              <v-list-item :value="listItemValue(j, i)" v-for="(c, i) in subListItems(s)" :key="i" dense link class="ml-6">
+                <v-list-item-title>-> {{c.title}}</v-list-item-title>
+                <v-list-item-icon>
+                  <v-icon>mdi-check</v-icon>
+                </v-list-item-icon>
+              </v-list-item>
+          </v-list-group>
+          <v-list-item v-else :key="j" :value="listItemValue(j, 0)" link >
+            <v-list-item-title class="ml-4"><strong>{{s.title}}</strong></v-list-item-title>
           </v-list-item>
         </template>
-        <v-list-item-group>
-          <v-list-item v-for="(c, i) in subListItems(s)" :key="i" link dense class="ml-6" >
-            <v-list-item-title v-text="c.title"></v-list-item-title>
-            <v-list-item-icon>
-              <v-icon>mdi-check</v-icon>
-            </v-list-item-icon>
-          </v-list-item>
-        </v-list-item-group>
-      </v-list-group>
-      <v-list-item-group :key="j" v-else  v-model="selectedItem" color="success">
-        <v-list-item>
-          <v-list-item-title class="ml-4" v-text="s.title"></v-list-item-title>
-        </v-list-item>
       </v-list-item-group>
-    </template></v-list>
+    </v-list>
   </v-navigation-drawer>
   <v-main>
-    <v-breadcrumbs :items="items"></v-breadcrumbs>
+    <v-breadcrumbs :items="breadcrumbs"></v-breadcrumbs>
     <v-divider></v-divider>
-    <v-card flat>
-      <v-card-text>
-        <span class="headline" ><v-badge icon="mdi-check" left> </v-badge>Search for Public APIs</span>
-          <v-radio-group v-model="ex8">
-            <v-radio label="primary" color="primary" value="primary"></v-radio>
-            <v-radio label="secondary" color="secondary" value="secondary"></v-radio>
-            <v-radio label="success" color="success" value="success"></v-radio>
-            <v-radio label="info" color="info" value="info"></v-radio>
-          </v-radio-group>
-      </v-card-text>
-    </v-card>
-    <v-card flat>
-      <v-breadcrumbs :items="items"></v-breadcrumbs>
-      <v-divider></v-divider>
-      <v-card-text v-for="(item, index) in wordList()" :key="index">
-        <v-row class="mb-0" v-on:dblclick="show = !show">
-          <v-col cols="10"><p class="title"> <strong>{{ item[0] }}</strong> {{ item[1] }} <v-divider vertical/>{{ item[2] }} </p></v-col>
-          <v-col cols="2" align="right"><v-icon @click="show = !show">mdi-dots-vertical</v-icon></v-col>
-        </v-row>
-        <v-expand-transition >
-          <div v-show="show">
-            <v-card-text>
-              I'm a thing. But, like most politicians, he promised more than he could deliver. You won't have time for sleeping, soldier, not with all the bed making you'll be doing. Then we'll go with that data file! Hey, you add a one and two zeros to that or we walk! You're going to do his laundry? I've got to find a way to escape.
-            </v-card-text>
-          </div>
-        </v-expand-transition>
-        <v-divider></v-divider>
-      </v-card-text>
-    </v-card>
+    <WordListCard v-if="selectedContent.type == 1" :content="selectedContent.content"/>
+    <SingleOptionCard v-else-if="selectedContent.type == 2" :content="selectedContent.content" />
   </v-main>
   <v-footer color="transparent" max-width="190" class="mx-auto" padless fixed>
     <v-row justify="center" color="rgba(0, 0, 0, .3)" no-gutters>
@@ -79,27 +52,27 @@
 
 <script>
 export default {
+  components: {
+    SingleOptionCard: () => import('./views/SingleOptionCard'),
+    WordListCard: () => import('./views/WordListCard'),
+  },
   data () {
     return {
-      show: false,
       selectedItem: 0,
+      selectedContent: {},
+      show: false,
       drawer: null,
       ex8: 'primary',
       value1: 100,
       value2: 0,
-      items: [
-        {
-          text: '单选测试',
-          disabled: true,
-        },
-        {
-          text: '1',
-          disabled: true,
-        },
-      ],
+      breadcrumbs: [],
     }
   },
   mounted () {
+    this.$root.$data.init();
+    this.selectedItem = this.$root.$data.getCurrentIdx();
+    this.selectedContent = this.$root.$data.getCurrentItem();
+    this.breadcrumbs = this.$root.$data.getBreadcrumbs();
     this.interval = setInterval(() => {
       if (this.value1 === 0) {
         return (this.value1 = 100)
@@ -107,15 +80,31 @@ export default {
       this.value1 -= 10
     }, 1000)
   },
+  computed: {
+  },
+  watch: {
+    selectedItem(value, oldValue) {
+      if(value && value > 254) {
+        this.$root.$data.setCurrentIdx(value);
+        this.selectedContent = this.$root.$data.getCurrentItem();
+        console.log(this.selectedContent)
+      }
+      console.log(value)
+      console.log(oldValue)
+    },
+  },
   methods: {
-    listGroups() {
-      return this.$root.$data.sections;
+    sectionList() {
+      return this.$root.$data.getSections();
+    },
+    listItemValue(sectionIdx, itemIdx) {
+      return this.$root.$data.generateIdx(sectionIdx, itemIdx);
     },
     subListItems(section) {
-      return section.items && section.items.slice(1);
+      return section.items && section.items;
     },
     wordList(section) {
-      return this.$root.$data.sections[0].items[0].content
+      return section.items
     }
   },
 }
