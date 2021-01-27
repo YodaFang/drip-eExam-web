@@ -60,24 +60,27 @@ const taskManager = {
   setCurrent(secIdx, itemIdx) {
     let idx = this.generateIdx(secIdx, itemIdx);
     if(idx > this.__endingIdx || this.__currentIdx == idx){
-      return;
+      return false;
     }
     this.__currentSecIdx = secIdx;
     this.__currentItemIdx = itemIdx;
     this.__currentIdx = idx;
+    return true;
   },
 
   setCurrentIdx(idx) {
     if(idx > this.__endingIdx || this.__currentIdx == idx){
-      return;
+      return false;
     }
-    this.__currentSecIdx = (idx >> 18);
-    this.__currentItemIdx = ((idx >> 8) & 1023);
+    this.__currentSecIdx = (idx >> 10);
+    this.__currentItemIdx = (idx & 1023);
     this.__currentIdx = idx;
+    return true;
   },
 
   generateIdx(secIdx, itemIdx) {
-    return (secIdx << 18) | (itemIdx << 8) | 255;
+    console.log(",,,,,,,/////")
+    return (secIdx << 10) | itemIdx;
   },
 
   hasNext() {

@@ -1,8 +1,8 @@
 <template>
   <v-card flat>
     <v-card-text v-for="(item, index) in content" :key="index">
-      <v-row class="mb-0" v-on:dblclick="showMore = !showMore">
-        <v-col cols="10"><p class="title"> <strong>{{ item[0] }}</strong> {{ item[1] }} <v-divider vertical/>{{ item[2] }} </p></v-col>
+      <v-row class="m-0" v-on:dblclick="showMore = !showMore">
+        <v-col cols="10"><p class="text-h6"> <strong>{{ item[0] }}</strong> {{ item[1] }} <v-divider vertical/>{{ item[2] }} </p></v-col>
         <v-col cols="2" align="right"><v-icon @click="showMore = !showMore">mdi-dots-vertical</v-icon></v-col>
       </v-row>
       <v-expand-transition >
