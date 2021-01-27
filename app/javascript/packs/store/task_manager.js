@@ -22,12 +22,13 @@ const taskManager = {
     ]},
   ],
   __data: {},
-  __currentSecIdx: 0,
-  __currentItemIdx: 0,
+  __currentSecIdx: 1,
+  __currentItemIdx: 1,
   __currentIdx: 0,
   __endingIdx: 0,
 
   init() {
+    this.__currentIdx = this.generateIdx(this.__currentSecIdx, this.__currentItemIdx);
     let endSec = this.__sections.length - 1;
     this.__endingIdx = this.generateIdx(endSec, (this.__sections[endSec].items.length - 1));
   },
@@ -95,8 +96,28 @@ const taskManager = {
     if(this.__currentItemIdx < (this.__sections[this.__currentSecIdx].items.length - 1)){
       this.setCurrent(this.__currentSecIdx, this.__currentItemIdx + 1)
       return this.__currentIdx;
-    } else if (this.__currentItemIdx < (this.__sections.length - 1)){
-      this.setCurrent(this.__currentSecIdx + 1, this.__currentItemIdx)
+    } else if (this.__currentSecIdx < (this.__sections.length - 1)){
+      this.setCurrent(this.__currentSecIdx + 1, 0)
+      return this.__currentIdx;
+    } else {
+      return -1;
+    }
+  },
+
+  hasBack() {
+    if(this.__currentIdx > 0){
+      return true;
+    } else {
+      return false;
+    }
+  },
+
+  back() {
+    if(this.__currentItemIdx > 0){
+      this.setCurrent(this.__currentSecIdx, this.__currentItemIdx - 1)
+      return this.__currentIdx;
+    } else if (this.__currentSecIdx > 0){
+      this.setCurrent(this.__currentSecIdx - 1, (this.__sections[this.__currentSecIdx].items.length - 1))
       return this.__currentIdx;
     } else {
       return -1;

@@ -8,8 +8,8 @@
     </v-card-text>
     <v-card-actions v-if="answerMode">
       <v-row class="m-0">
-        <v-col cols="8"><v-btn color="primary" text outlined block @click="step++" ><strong>Next</strong></v-btn></v-col>
-        <v-col cols="4"><v-btn text block outlined @click="step--" >Back</v-btn></v-col>
+        <v-col cols="8"><v-btn v-if="hasMore" color="primary" text outlined block @click="next()" ><strong>Next</strong></v-btn></v-col>
+        <v-col cols="4"><v-btn text block outlined @click="back()" >Back</v-btn></v-col>
       </v-row>
     </v-card-actions>
   </v-card>
@@ -25,6 +25,19 @@ export default {
       type: Boolean,
       required: false,
       default: true
+    },
+    hasMore: {
+      type: Boolean,
+      required: true,
+      default: true
+    },
+    next: {
+      type: Function,
+      required: true,
+    },
+    back: {
+      type: Function,
+      required: true,
     },
   },
   data () {
