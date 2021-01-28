@@ -1,10 +1,10 @@
 <template>
-  <v-card flat max-width="800px">
+  <v-card flat>
     <v-card-text>
       <span class="text-h6" v-text="content.title"></span>
-        <v-radio-group v-model="answer" :disabled="!answerMode">
-          <v-radio v-for="(option, i) in content.options" :key="i" :label="option" :value="i"></v-radio>
-        </v-radio-group>
+      <v-radio-group v-model="answer" :disabled="!answerMode">
+        <v-radio v-for="(option, i) in content.options" :key="i" :label="option" :value="i"></v-radio>
+      </v-radio-group>
     </v-card-text>
     <v-card-actions v-if="answerMode">
       <v-row class="m-0">
@@ -45,7 +45,10 @@ export default {
       answer: null,
     }
   },
-  mounted () {
+  watch: {
+    content(_, old){
+      this.answer = this.content.answer;
+    }
   },
   methods: {
   }
