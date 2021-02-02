@@ -6,6 +6,7 @@
         <v-radio v-for="(option, i) in content.options" :key="i" :label="option" :value="i"></v-radio>
       </v-radio-group>
     </v-card-text>
+    <v-divider></v-divider>
     <v-card-actions v-if="answerMode">
       <v-row class="m-0">
         <v-col cols="8"><v-btn v-if="hasMore" color="primary" text outlined block @click="next()" ><strong>Next</strong></v-btn></v-col>

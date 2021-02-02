@@ -22,12 +22,12 @@ export default {
       required: true
     },
   },
-  data () {
+  data(){
     return {
       showMore: false,
     }
   },
-  mounted () {
+  mounted(){
   },
   methods: {
     triggleShowMore(){
