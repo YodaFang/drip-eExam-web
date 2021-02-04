@@ -1,4 +1,2 @@
-module Drip
-  class Enumeration < Drip::Base
-  end
+class Drip::Enumeration < Drip::Base
 end

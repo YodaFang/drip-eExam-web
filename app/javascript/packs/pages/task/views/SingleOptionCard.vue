@@ -1,7 +1,7 @@
 <template>
   <v-card flat>
     <v-card-text>
-      <span class="text-h6" v-text="content.title"></span>
+      <span class="text-h6" v-text="content.description"></span>
       <v-radio-group v-model="answer" :disabled="!answerMode">
         <v-radio v-for="(option, i) in content.options" :key="i" :label="option" :value="i"></v-radio>
       </v-radio-group>

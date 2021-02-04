@@ -67,21 +67,16 @@ ActiveRecord::Schema.define(version: 2021_01_04_100414) do
     t.string "type"
     t.integer "dificult"
     t.integer "points"
-    t.boolean "is_root", default: true
-    t.integer "parent_id"
     t.text "description"
-    t.text "ref_fields"
+    t.text "options"
     t.text "answers"
     t.text "comments"
     t.integer "status", default: 0
-    t.bigint "user_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["category"], name: "index_questions_on_category"
-    t.index ["is_root"], name: "index_questions_on_is_root"
     t.index ["status"], name: "index_questions_on_is_status"
     t.index ["type"], name: "index_questions_on_type"
-    t.index ["user_id"], name: "index_drip_questions_on_user_id"
   end
 
   create_table "drip_task_steps", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|

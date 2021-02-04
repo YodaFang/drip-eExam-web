@@ -10,25 +10,52 @@ class DripOneTwo < ActiveRecord::Migration[6.0]
     add_index :drip_enumerations, [:visible],       name: 'index_enumerations_on_visible'
     add_index :drip_enumerations, [:item_code],          name: 'index_enumerations_on_item_code'
 
+    create_table :drip_users do |t|
+      t.string :name
+      t.string :login
+      t.string :password
+      t.integer :role,   default: 0
+      t.string :birth_date
+      t.integer :sex,   default: 0
+      t.string :phone
+      t.string :email
+      t.string :source
+      t.integer :status,   default: 0
+      t.string :deleted_by
+      t.string :created_by
+
+      t.timestamps
+    end
+    add_index :drip_users, [:email],          name: 'index_users_on_email'
+    add_index :drip_users, [:phone],          name: 'index_users_on_phone'
+    add_index :drip_users, [:login],          name: 'index_users_on_login'
+    add_index :drip_users, [:role],          name: 'index_users_on_role'
+    add_index :drip_users, [:status],          name: 'index_users_on_status'
+
+    create_table :drip_user_actions do |t|
+      t.references :user
+      t.string :action
+      t.string :target_type
+      t.integer :target_id
+
+      t.timestamps
+    end
+
     create_table :drip_questions do |t|
       t.string :category
       t.string :type
       t.integer :dificult
       t.integer :points
-      t.boolean :is_root,   default: true
-      t.integer :parent_id
       t.text :description
-      t.text :ref_fields
+      t.text :options
       t.text :answers
       t.text :comments
       t.integer :status,   default: 0
-      t.references :user
 
       t.timestamps
     end
     add_index :drip_questions, [:category],          name: 'index_questions_on_category'
     add_index :drip_questions, [:type],          name: 'index_questions_on_type'
-    add_index :drip_questions, [:is_root],          name: 'index_questions_on_is_root'
     add_index :drip_questions, [:status],          name: 'index_questions_on_is_status'
 
     create_table :drip_exams do |t|
@@ -108,36 +135,5 @@ class DripOneTwo < ActiveRecord::Migration[6.0]
       t.timestamps
     end
     add_index :drip_user_task_records, [:status],          name: 'index_user_task_records_on_status'
-
-    create_table :drip_users do |t|
-      t.string :name
-      t.string :login
-      t.string :password
-      t.integer :role,   default: 0
-      t.string :birth_date
-      t.integer :sex,   default: 0
-      t.string :phone
-      t.string :email
-      t.string :source
-      t.integer :status,   default: 0
-      t.string :deleted_by
-      t.string :created_by
-
-      t.timestamps
-    end
-    add_index :drip_users, [:email],          name: 'index_users_on_email'
-    add_index :drip_users, [:phone],          name: 'index_users_on_phone'
-    add_index :drip_users, [:login],          name: 'index_users_on_login'
-    add_index :drip_users, [:role],          name: 'index_users_on_role'
-    add_index :drip_users, [:status],          name: 'index_users_on_status'
-
-    create_table :drip_user_actions do |t|
-      t.references :user
-      t.string :action
-      t.string :target_type
-      t.integer :target_id
-
-      t.timestamps
-    end
   end
 end
