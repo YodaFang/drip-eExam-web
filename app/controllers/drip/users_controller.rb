@@ -1,12 +1,4 @@
 class Drip::UsersController < Drip::BaseController
-  def index
-  end
-
-  def show
-  end
-
-  def new; end
-
   def register_check
     return render_failure_with_messages('账号不能为空！') if params[:login].blank?
     if Drip::User.check_login(params[:login])
@@ -24,12 +16,12 @@ class Drip::UsersController < Drip::BaseController
       render_success_payload_with_user_info
     else
       Rails.logger.error "UsersController: failed to create user: #{params.inspect}"
-      render_failure_with_messages('账号创建失败，请稍后再尝试！') 
+      render_failure_with_messages('账号创建失败，请稍后再尝试！')
     end
   rescue => e
     Rails.logger.error "UsersController: failed to create user, exception: #{params.inspect}"
     Rails.logger.error "UsersController: failed to create user, params: #{params.inspect}"
-    render_failure_with_messages('账号创建失败，请稍后再尝试！') 
+    render_failure_with_messages('账号创建失败，请稍后再尝试！')
   end
 
   def login_by_acount
@@ -37,7 +29,7 @@ class Drip::UsersController < Drip::BaseController
     if @user&.valid_password?(params[:password])
       render_success_payload_with_user_info
     else
-      render_failure_with_messages('账号或者密码错误！') 
+      render_failure_with_messages('账号或者密码错误！')
     end
   end
 
@@ -46,7 +38,7 @@ class Drip::UsersController < Drip::BaseController
     if @user.present?
       render_success_payload_with_user_info
     else
-      render_failure_with_messages('token信息错误！') 
+      render_failure_with_messages('token信息错误！')
     end
   end
 
@@ -55,7 +47,7 @@ class Drip::UsersController < Drip::BaseController
       #TODO add login IP and login time update
       render_success_payload_with_user_info
     else
-      render_failure_with_messages('信息更新失败！') 
+      render_failure_with_messages('信息更新失败！')
     end
   end
 

@@ -26,7 +26,7 @@ ActiveRecord::Schema.define(version: 2021_01_04_100414) do
     t.bigint "exam_id"
     t.bigint "exam_section_id"
     t.bigint "question_id"
-    t.integer "dificult"
+    t.integer "difficult"
     t.integer "points"
     t.text "description"
     t.text "ref_fields"
@@ -48,7 +48,7 @@ ActiveRecord::Schema.define(version: 2021_01_04_100414) do
   create_table "drip_exams", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.string "title"
     t.string "category"
-    t.integer "dificult"
+    t.integer "difficult"
     t.integer "finish_time"
     t.integer "points"
     t.integer "question_count"
@@ -65,7 +65,7 @@ ActiveRecord::Schema.define(version: 2021_01_04_100414) do
   create_table "drip_questions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.string "category"
     t.string "type"
-    t.integer "dificult"
+    t.integer "difficult"
     t.integer "points"
     t.text "description"
     t.text "options"

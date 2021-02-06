@@ -16,9 +16,9 @@ module ModelSerializer
     includes&.each do |include_item|
       idx = include_item.index('.')
       if idx.present?
-        key = include_item[0, idx-1]
+        key = include_item[0, idx]
         includes_hash[key] = [] unless includes_hash.key?(key)
-        includes_hash[key] << include_item[idx, 9999]
+        includes_hash[key] << include_item[idx+1, 9999]
       else
         key = include_item
         includes_hash[key] = [] unless includes_hash.key?(key)
@@ -28,7 +28,7 @@ module ModelSerializer
     includes_hash.each do |key, value|
       relation = resource.public_send(key)
       if relation.respond_to?(:each)
-        hash_result[key] = (hash_collection(relation, value)).data
+        hash_result[key] = (hash_collection(relation, value)).fetch(:data, [])
       else
         hash_result[key] = hash_record(relation, value)
       end

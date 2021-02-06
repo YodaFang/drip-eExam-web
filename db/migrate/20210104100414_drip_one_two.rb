@@ -44,7 +44,7 @@ class DripOneTwo < ActiveRecord::Migration[6.0]
     create_table :drip_questions do |t|
       t.string :category
       t.string :type
-      t.integer :dificult
+      t.integer :difficult
       t.integer :points
       t.text :description
       t.text :options
@@ -61,7 +61,7 @@ class DripOneTwo < ActiveRecord::Migration[6.0]
     create_table :drip_exams do |t|
       t.string :title
       t.string :category
-      t.integer :dificult
+      t.integer :difficult
       t.integer :finish_time
       t.integer :points
       t.integer :question_count
@@ -85,7 +85,7 @@ class DripOneTwo < ActiveRecord::Migration[6.0]
       t.references :exam
       t.references :exam_section
       t.references :question
-      t.integer :dificult
+      t.integer :difficult
       t.integer :points
       t.text :description
       t.text :ref_fields
