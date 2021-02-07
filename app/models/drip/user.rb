@@ -52,8 +52,4 @@ class Drip::User < Drip::Base
   def super_admin?
     id == 1 && role == 3
   end
-
-  def hash_attributes
-    [:id, :name, :birth_date, :sex, :phone, :email, :login, { admin: :admin? }]
-  end
 end
