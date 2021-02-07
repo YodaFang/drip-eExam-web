@@ -11,18 +11,18 @@ const request = function(loadtip, url, params, method) {
     data: params,
   }
   return axios.request(query).then(res => {
-      if (loadtip) store.isShowLoading = false;
-      return Promise.resolve(res.data);
-    }).catch(err => {
-      if (loadtip) store.isShowLoading = false;
-      if(err.response && err.response.status == 488){
-        if(err.response.data.errors) store.showErrors(err.response.data.errors)
-      } else {
-        console.log(err)
-        console.log(err.response)
-      }
-      return Promise.reject(err);
-    })
+    if (loadtip) store.isShowLoading = false;
+    return Promise.resolve(res.data);
+  }).catch(err => {
+    if (loadtip) store.isShowLoading = false;
+    if(err.response && err.response.status == 488){
+      if(err.response.data.errors) store.showErrors(err.response.data.errors)
+    } else {
+      console.log(err)
+      console.log(err.response)
+    }
+    return Promise.reject(err);
+  })
 }
 
 export default {

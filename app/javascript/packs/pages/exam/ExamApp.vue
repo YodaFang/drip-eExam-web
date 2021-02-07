@@ -31,8 +31,8 @@
     <v-main>
       <v-breadcrumbs :items="breadcrumbs"></v-breadcrumbs>
       <v-divider></v-divider>
-      <WordListCard v-if="selectedContent.type == 1" :content="selectedContent.content" :hasMore="hasMore" :next="next" :back="back"/>
-      <SingleOptionCard v-else-if="selectedContent.type == 2" :content="selectedContent.content" :hasMore="hasMore" :next="next" :back="back"/>
+      <WordListCard v-if="selectedContent.type == 1" :content="selectedContent" :hasMore="hasMore" :next="next" :back="back"/>
+      <SingleOptionCard v-else-if="selectedContent.type == 2" :content="selectedContent" :hasMore="hasMore" :next="next" :back="back"/>
       <div style="height:80px;"></div>
     </v-main>
     <v-footer color="transparent" max-width="190" class="mx-auto" padless fixed>
@@ -64,8 +64,11 @@ export default {
       value1: 100,
       value2: 0,
       breadcrumbs: [],
-      menuList: this.$root.$data.init(),
+      menuList: this.$root.$data.getIndexArray(),
     }
+  },
+  beforeCreate(){
+    this.$root.$data.init();
   },
   mounted(){
     this.setCurrent();
@@ -77,7 +80,7 @@ export default {
       }
       this.value1--;
       this.value2++;
-    }, 10000);
+    }, 3000);
   },
   computed: {
   },

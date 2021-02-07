@@ -7,9 +7,7 @@
     "core-js": "^3.6.5",
     "js-cookie": "^2.2.1",
     "vue": "^2.6.12",
-    "vue-loader": "^15.9.6",
     "vue-router": "^3.4.9",
-    "vue-template-compiler": "^2.6.12",
     "vuetify": "^2.4.2"
   },
   "version": "0.1.0",
@@ -17,6 +15,8 @@
     "deepmerge": "^4.2.2",
     "sass": "^1.32.4",
     "sass-loader": "^10.1.1",
-    "webpack-dev-server": "^3.11.2"
+    "webpack-dev-server": "^3.11.2",
+    "vue-loader": "^15.9.6",
+    "vue-template-compiler": "^2.6.12"
   }
 }

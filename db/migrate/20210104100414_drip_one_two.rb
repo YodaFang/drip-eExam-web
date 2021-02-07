@@ -87,8 +87,9 @@ class DripOneTwo < ActiveRecord::Migration[6.0]
       t.references :question
       t.integer :difficult
       t.integer :points
+      t.integer :type
       t.text :description
-      t.text :ref_fields
+      t.text :options
       t.text :answers
       t.text :comments
     end

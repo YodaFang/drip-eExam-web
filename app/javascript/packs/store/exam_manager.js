@@ -1,10 +1,9 @@
-import Cookies from 'js-cookie'
 import request from '@/utils/request'
 
 const taskManager = {
   __isDebug: true,
   __sections: [
-    { title: "单词列表", type: 1, items: [
+    { title: "单词列表", items: [
       { type: 1, content: [
           ["a ", "[ei]", "  art. 一 一个 件"],
           ["act ", "[ækt]", "  v. 行动 做动作 vt. 扮演 vi..."],
@@ -22,26 +21,26 @@ const taskManager = {
         ]
       }
     ]},
-    { title: "测试1", type: 2, items: [
-      { type: 2, content: {description: "一; 一个;", options: ["a", "and", "an", "b"]} },
-      { type: 2, content: {description: "为; 供", options: ["four", "at", "for", "to"]} },
-      { type: 2, content: {description: "接近的; 亲近的; 亲密的", options: ["honey", "close", "open", "book"]} },
+    { title: "测试1", items: [
+      { type: 2, description: "一; 一个;", options: ["a", "and", "an", "b"] },
+      { type: 2, description: "为; 供", options: ["four", "at", "for", "to"] },
+      { type: 2, description: "接近的; 亲近的; 亲密的", options: ["honey", "close", "open", "book"] },
     ]},
-    { title: "测试2", type: 2, items: [
-      { type: 2, content: {description: "一; 一个;", options: ["a", "and", "an", "b"]} },
-      { type: 2, content: {description: "为; 供", options: ["four", "at", "for", "to"]} },
-      { type: 2, content: {description: "接近的; 亲近的; 亲密的", options: ["honey", "close", "open", "book"]} },
-      { type: 2, content: {description: "一; 一个;", options: ["a", "and", "an", "b"]} },
-      { type: 2, content: {description: "为; 供", options: ["four", "at", "for", "to"]} },
-      { type: 2, content: {description: "接近的; 亲近的; 亲密的", options: ["honey", "close", "open", "book"]} },
+    { title: "测试2", items: [
+      { type: 2, description: "一; 一个;", options: ["a", "and", "an", "b"] },
+      { type: 2, description: "为; 供", options: ["four", "at", "for", "to"] },
+      { type: 2, description: "接近的; 亲近的; 亲密的", options: ["honey", "close", "open", "book"] },
+      { type: 2, description: "一; 一个;", options: ["a", "and", "an", "b"] },
+      { type: 2, description: "为; 供", options: ["four", "at", "for", "to"] },
+      { type: 2, description: "接近的; 亲近的; 亲密的", options: ["honey", "close", "open", "book"] },
     ]},
-    { title: "测试3", type: 2, items: [
-      { type: 2, content: {description: "一; 一个;", options: ["a", "and", "an", "b"]} },
-      { type: 2, content: {description: "为; 供", options: ["four", "at", "for", "to"]} },
-      { type: 2, content: {description: "接近的; 亲近的; 亲密的", options: ["honey", "close", "open", "book"]} },
-      { type: 2, content: {description: "一; 一个;", options: ["a", "and", "an", "b"]} },
-      { type: 2, content: {description: "为; 供", options: ["four", "at", "for", "to"]} },
-      { type: 2, content: {description: "接近的; 亲近的; 亲密的", options: ["honey", "close", "open", "book"]} },
+    { title: "测试3", items: [
+      { type: 2, description: "一; 一个;", options: ["a", "and", "an", "b"] },
+      { type: 2, description: "为; 供", options: ["four", "at", "for", "to"] },
+      { type: 2, description: "接近的; 亲近的; 亲密的", options: ["honey", "close", "open", "book"] },
+      { type: 2, description: "一; 一个;", options: ["a", "and", "an", "b"] },
+      { type: 2, description: "为; 供", options: ["four", "at", "for", "to"] },
+      { type: 2, description: "接近的; 亲近的; 亲密的", options: ["honey", "close", "open", "book"] },
     ]},
   ],
   __data: {},
@@ -54,20 +53,6 @@ const taskManager = {
   init() {
     console.log('init..............')
     this.loadExamDetail(1);
-    let secLength = this.__sections.length;
-    this.__indexArray = new Array(secLength);
-    this.__endingSecIdx = secLength - 1;
-    this.__endingItemIdx = this.__sections[this.__endingSecIdx].items.length - 1;
-    for(let i=0; i < secLength; i++){
-      let itemLen = this.__sections[i].items.length;
-      this.__indexArray[i] = new Array(itemLen);
-      for(let j=0; j < itemLen; j++){
-        this.__indexArray[i][j] = this.generateIdx(i, j);
-      }
-    }
-    this.__currentSecIdx = 1;
-    this.__currentItemIdx = 1;
-    return this.__indexArray;
   },
 
   loadExamDetail(exam_id) {
@@ -75,9 +60,26 @@ const taskManager = {
     console.log('loadExamDetail..............')
     request.get('/exam/detail', { id: exam_id }).then((resData) => {
       console.log(resData)
+      let secLength = _this.__sections.length;
+      _this.__indexArray = new Array(secLength);
+      _this.__endingSecIdx = secLength - 1;
+      _this.__endingItemIdx = _this.__sections[_this.__endingSecIdx].items.length - 1;
+      for(let i=0; i < secLength; i++){
+        let itemLen = _this.__sections[i].items.length;
+        _this.__indexArray[i] = new Array(itemLen);
+        for(let j=0; j < itemLen; j++){
+          _this.__indexArray[i][j] = _this.generateIdx(i, j);
+        }
+      }
+      _this.__currentSecIdx = 1;
+      _this.__currentItemIdx = 1;
     }).catch(err => {
       console.log(err.response)
     })
+  },
+
+  getIndexArray() {
+    return this.__indexArray;
   },
 
   getSection(secIdx) {
