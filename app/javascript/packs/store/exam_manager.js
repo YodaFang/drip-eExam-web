@@ -1,3 +1,6 @@
+import Cookies from 'js-cookie'
+import request from '@/utils/request'
+
 const taskManager = {
   __isDebug: true,
   __sections: [
@@ -49,6 +52,8 @@ const taskManager = {
   __indexArray: [],
 
   init() {
+    console.log('init..............')
+    this.loadExamDetail(1);
     let secLength = this.__sections.length;
     this.__indexArray = new Array(secLength);
     this.__endingSecIdx = secLength - 1;
@@ -63,6 +68,16 @@ const taskManager = {
     this.__currentSecIdx = 1;
     this.__currentItemIdx = 1;
     return this.__indexArray;
+  },
+
+  loadExamDetail(exam_id) {
+    const _this = this
+    console.log('loadExamDetail..............')
+    request.get('/exam/detail', { id: exam_id }).then((resData) => {
+      console.log(resData)
+    }).catch(err => {
+      console.log(err.response)
+    })
   },
 
   getSection(secIdx) {
