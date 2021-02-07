@@ -49,6 +49,6 @@ Object.keys(environment.entry.toObject()).forEach((key) => {
 })
 environment.entry.set('application', join(sourcePath, '/application.js'))
 environment.entry.set('home_vue', join(sourcePath, '/pages/home/home_main.js'))
-environment.entry.set('task_vue', join(sourcePath, '/pages/task/task_main.js'))
+environment.entry.set('exam_vue', join(sourcePath, '/pages/exam/exam_main.js'))
 
 module.exports = environment

@@ -1,5 +1,10 @@
-class Drip::TaskController < Drip::BaseController
+class Drip::ExamsController < Drip::BaseController
   def show
+    puts 'Drip::ExamController....................'
+    render "exams/show.html.erb"
+  end
+
+  def exam_detail
     return render_failure_with_messages('参数缺失！') if params[:id].blank?
     @task = Drip::Task.active.find_by(id: params[:id])
     return render_failure_with_messages('任务不存在！') if @task.blank?

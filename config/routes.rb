@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  get 'task/show'
   get 'home/index'
   get 'admin/index'
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
@@ -10,4 +9,6 @@ Rails.application.routes.draw do
   post '/loginByToken', to: 'drip/users#login_by_token'
   post '/loginByAcount', to: 'drip/users#login_by_acount'
   resources :users
+
+  get 'exam/show', to: 'drip/exams#show'
 end
