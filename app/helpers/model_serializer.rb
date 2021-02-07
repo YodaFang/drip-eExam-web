@@ -18,12 +18,12 @@ module ModelSerializer
     'Drip::TaskStep' => [:target],
   }
 
-  def hash_record(resource, includes_default = false)
+  def hash_record(resource, includes_default: false, attr_hash: HASH_ATTRIBUTES, includes_hash: HASH_INCLUDES)
     return {} unless resource.present?
 
     hash_result = {}
     class_name = resource.class.name
-    HASH_ATTRIBUTES.fetch(class_name, []).each do |attr_name|
+    attr_hash.fetch(class_name, []).each do |attr_name|
       if attr_name.is_a?(Symbol)
         hash_result[attr_name] = resource.public_send(attr_name)
       elsif attr_name.is_a?(Hash)
@@ -34,21 +34,41 @@ module ModelSerializer
     end
     return hash_result unless includes_default
 
-    HASH_INCLUDES.fetch(class_name, []).each do |include_item|
+    includes_hash.fetch(class_name, []).each do |include_item|
       if include_item.is_a?(Symbol)
         relation = resource.public_send(include_item)
         if relation.respond_to?(:each)
-          hash_result[include_item] = (hash_collection(relation, includes_default)).fetch(:data, [])
+          hash_result[include_item] = (hash_collection(
+            relation,
+            includes_default: includes_default,
+            attr_hash: attr_hash,
+            includes_hash: includes_hash
+          )).fetch(:data, [])
         else
-          hash_result[include_item] = hash_record(relation, includes_default)
+          hash_result[include_item] = hash_record(
+            relation,
+            includes_default: includes_default,
+            attr_hash: attr_hash,
+            includes_hash: includes_hash
+          )
         end
       elsif include_item.is_a?(Hash)
         include_item.each do |attr_key, attr_method|
           relation = resource.public_send(attr_method)
           if relation.respond_to?(:each)
-            hash_result[attr_key] = (hash_collection(relation, includes_default)).fetch(:data, [])
+            hash_result[attr_key] = (hash_collection(
+              relation,
+              includes_default: includes_default,
+              attr_hash: attr_hash,
+              includes_hash: includes_hash
+            )).fetch(:data, [])
           else
-            hash_result[attr_key] = hash_record(relation, includes_default)
+            hash_result[attr_key] = hash_record(
+              relation,
+              includes_default: includes_default,
+              attr_hash: attr_hash,
+              includes_hash: includes_hash
+            )
           end
         end
       end
@@ -57,10 +77,15 @@ module ModelSerializer
     hash_result
   end
 
-  def hash_collection(collection, includes_default = false)
+  def hash_collection(collection, includes_default: false, attr_hash: HASH_ATTRIBUTES, includes_hash: HASH_INCLUDES)
     array_result = []
     collection&.each do |item|
-      array_result << hash_record(item, includes_default)
+      array_result << hash_record(
+        item,
+        includes_default: includes_default,
+        attr_hash: attr_hash,
+        includes_hash: includes_hash
+      )
     end
     { data: array_result }
   end
