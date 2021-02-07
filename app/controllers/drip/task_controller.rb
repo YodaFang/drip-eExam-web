@@ -22,6 +22,6 @@ class Drip::TaskController < Drip::BaseController
   end
 
   def hash_task
-    ModelSerializer.hash_record(@task, ['task_steps'])
+    ModelSerializer.hash_record(@task, includes_ind: true)
   end
 end
