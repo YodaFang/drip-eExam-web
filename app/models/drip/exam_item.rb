@@ -6,8 +6,4 @@ class Drip::ExamItem < Drip::Base
   def options_array
     options&.split('||||')
   end
-
-  def hash_values
-    {id: id, difficult: difficult, points: points, description: description, options: options_array, answers: answers, comments: comments}
-  end
 end

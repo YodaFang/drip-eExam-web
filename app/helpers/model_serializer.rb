@@ -7,7 +7,7 @@ module ModelSerializer
     'Drip::ExamSection' => [:id, :title, :points, :question_count],
     'Drip::ExamItem' => [:id, :difficult, :points, :description, { options: :options_array }, :answers, :comments],
     'Drip::Task' => [:id, :title, :type, :finish_time],
-    'Drip::TaskStep' => [:id, :title, :action, { target: :hash_target_with_includes }],
+    'Drip::TaskStep' => [:id, :title, :action, :target_type],
     'Drip::Question' => [:id, :category, :type, :difficult, :points, :description, :options, :answers, :comments],
   }
 
