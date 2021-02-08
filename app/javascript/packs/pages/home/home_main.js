@@ -8,8 +8,8 @@ import user from '@/store/user'
 // Vue需要对data中数据添加些方法属性，从而能够监听data，所以需要将对象设置为可被修改
 Object.defineProperty(store, "user", {
   value: user,
-  writable: true,
-  configurable: true
+  writable: false,
+  configurable: false
 });
 
 new Vue({
@@ -22,7 +22,6 @@ new Vue({
 
 // Vue初始化完后将对象属性设置为不被修改
 Object.defineProperty(store, "user", {
-  value: user,
   writable: false,
   configurable: false
 });

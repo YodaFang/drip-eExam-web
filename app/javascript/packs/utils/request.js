@@ -1,48 +1,44 @@
-import axios from 'axios'
 import store from '@/store/index'
+import jquery from 'jquery'
 
-const request = function(loadtip, url, params, method) {
-  if (loadtip) store.isShowLoading = true;
-  let query = {
-    // baseURL: '/api',
+const syncRequest = function(url, method, params, sucCallback, errorCallback) {
+  store.showLoading();
+  jquery.ajax({
     url: url,
-    method: method,
-    timeout: 5000,
+    type: method,
     data: params,
-  }
-  return axios.request(query).then(res => {
-    if (loadtip) store.isShowLoading = false;
-    return Promise.resolve(res.data);
-  }).catch(err => {
-    if (loadtip) store.isShowLoading = false;
-    if(err.response && err.response.status == 488){
-      if(err.response.data.errors) store.showErrors(err.response.data.errors)
-    } else {
-      console.log(err)
-      console.log(err.response)
+    async: false,
+    success: sucCallback,
+    error: errorCallback
+  })
+  store.hideLoading();
+}
+
+const asyncRequest = function(url, method, params, sucCallback, errorCallback) {
+  store.showLoading();
+  jquery.ajax({
+    url: url,
+    type: method,
+    data: params,
+    success: sucCallback,
+    error: errorCallback,
+    complete: function(){
+      store.hideLoading();
     }
-    return Promise.reject(err);
   })
 }
 
 export default {
-  post: function(url, params) {
-    return request(true, url, params, 'post')
+  syncGet: function(url, params, sucCallback, errorCallback) {
+    return syncRequest(url, 'GET', params, sucCallback, errorCallback)
   },
-  postWithOutLoadTip: function(url, params) {
-    return request(false, url, params, 'post')
+  syncPost: function(url, params, sucCallback, errorCallback) {
+    return syncRequest(url, 'POST', params, sucCallback, errorCallback)
   },
-  get: function(url, params) {
-    return axios.get(url, {params: params}).then(res => {
-      return Promise.resolve(res.data);
-    }).catch(err => {
-      if(err.response && err.response.status == 488){
-        if(err.response.data.errors) store.showErrors(err.response.data.errors)
-      } else {
-        console.log(err)
-        console.log(err.response)
-      }
-      return Promise.reject(err);
-    })
-  }
+  post: function(url, params, sucCallback, errorCallback) {
+    return asyncRequest(url, 'POST', params, sucCallback, errorCallback)
+  },
+  get: function(url, params, sucCallback, errorCallback) {
+    return asyncRequest(url, 'GET', params, sucCallback, errorCallback)
+  },
 }

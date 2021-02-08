@@ -120,18 +120,20 @@
 import validateRules from  '@/utils/validate_rules'
 
 export default {
-  data: () => ({
-    tabs: null,
-    signInValid: true,
-    signUpValid: true,
-    showModal: false,
-    showPassword: false,
-    name: '',
-    login: '',
-    password: '',
-    passwordConfirm: '',
-    loginError: '',
-  }),
+  data(){
+    return {
+      tabs: null,
+      signInValid: true,
+      signUpValid: true,
+      showModal: false,
+      showPassword: false,
+      name: '',
+      login: '',
+      password: '',
+      passwordConfirm: '',
+      loginError: '',
+    }
+  },
   methods: {
     rules(){
       return validateRules;

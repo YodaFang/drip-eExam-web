@@ -1,19 +1,9 @@
 <template>
   <div class="text-center">
-    <v-snackbar
-      v-model="isShowAlerts"
-      timeout="3000"
-      :multi-line="true"
-      top
-    >
+    <v-snackbar v-model="isShowAlerts" timeout="3000" :multi-line="true" top>
       <v-alert type="error"> {{ errorMessages() }} </v-alert>
       <template v-slot:action="{ attrs }">
-        <v-btn
-          color="red"
-          icon
-          v-bind="attrs"
-          @click="isShowAlerts=false"
-        >
+        <v-btn color="red" icon v-bind="attrs" @click="isShowAlerts=false" >
           <v-icon>mdi-close-circle-outline</v-icon>
         </v-btn>
       </template>
