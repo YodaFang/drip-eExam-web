@@ -1,5 +1,7 @@
 <template>
 <v-card style="margin:0 auto;" max-width="1260px">
+  <LoadingDialog />
+  <AlertSnackbar />
   <v-app id="task-app">
     <v-system-bar app dark color="blue lighten-1">
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
