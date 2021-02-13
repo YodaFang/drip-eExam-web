@@ -35,6 +35,7 @@
       <v-divider></v-divider>
       <WordListCard v-if="selectedContent.type == 1" :content="selectedContent" :hasMore="hasMore" :next="next" :back="back"/>
       <SingleOptionCard v-else-if="selectedContent.type == 2" :content="selectedContent" :hasMore="hasMore" :next="next" :back="back"/>
+      <NumberQuestion/>
       <div style="height:80px;"></div>
     </v-main>
     <v-footer color="transparent" max-width="190" class="mx-auto" padless fixed>
@@ -55,6 +56,7 @@ export default {
     AlertSnackbar: () => import('@/components/AlertSnackbar'),
     SingleOptionCard: () => import('./views/SingleOptionCard'),
     WordListCard: () => import('./views/WordListCard'),
+    NumberQuestion: () => import('./views/NumberQuestionCard'),
   },
   data(){
     return {
@@ -66,7 +68,7 @@ export default {
       value1: 100,
       value2: 0,
       breadcrumbs: [],
-      menuList: this.$root.$data.getIndexArray(),
+      menuList: this.$root.$data.exam.getIndexArray(),
     }
   },
   beforeCreate(){
@@ -90,42 +92,42 @@ export default {
   },
   methods: {
     menuTitle(secIdx){
-      return this.$root.$data.getSection(secIdx).title;
+      return this.$root.$data.exam.getSection(secIdx).title;
     },
     subMenuTitle(secIdx, itemIdx){
       return itemIdx + 1;
     },
     setCurrent(){
-      this.selectedItem = this.$root.$data.getCurrentIdx();
-      this.selectedContent = this.$root.$data.getCurrentItem();
-      this.hasMore = this.$root.$data.hasNext();
-      this.hasBack = this.$root.$data.hasBack();
-      this.breadcrumbs = this.$root.$data.getBreadcrumbs();
+      this.selectedItem = this.$root.$data.exam.getCurrentIdx();
+      this.selectedContent = this.$root.$data.exam.getCurrentItem();
+      this.hasMore = this.$root.$data.exam.hasNext();
+      this.hasBack = this.$root.$data.exam.hasBack();
+      this.breadcrumbs = this.$root.$data.exam.getBreadcrumbs();
     },
     selectItem(secIdx, itemIdx){
-      if(this.$root.$data.setCurrent(secIdx, itemIdx)){
+      if(this.$root.$data.exam.setCurrent(secIdx, itemIdx)){
         this.setCurrent();
       }
     },
     next(){
-      if(this.$root.$data.next()){
+      if(this.$root.$data.exam.next()){
         this.expandMenu();
         this.setCurrent();
       }
     },
     back(){
-      if(this.$root.$data.back()){
+      if(this.$root.$data.exam.back()){
         this.expandMenu();
         this.setCurrent();
       }
     },
     expandMenu(){
-      let idx = this.$root.$data.getCurrentSecIdx();
+      let idx = this.$root.$data.exam.getCurrentSecIdx();
       let menuGroup = document.getElementById(`menu-group-${idx}`);
       if(!menuGroup.classList.contains('v-list-group--active')) document.getElementById(`menu-item-${idx}`).click();
     },
     sectionList(){
-      return this.$root.$data.getSections();
+      return this.$root.$data.exam.getSections();
     },
   },
 }
