@@ -2,18 +2,18 @@
   <div class="keypad-container">
     <template v-for="n in 12">
       <div :key="n" class="keypad-flex keypad-class">
-        <div class="keypad" :ripple="true" v-if="n < 10" @click="onInput(n);">
+        <div class="keypad" :ripple="true" v-if="n < 10" @click="appendInput(n);">
           <div v-if="n < 10" class="keypad-center">{{ n }}</div>
         </div>
-        <div class="keypad" v-else-if="n == 10 && onReset" @click="onReset">
+        <div class="keypad" v-else-if="n == 10" @click="resetInput()">
           <div class="keypad-center">
             <strong class="keypad-delete">&copy;</strong>
           </div>
         </div>
-        <div class="keypad" :ripple="true" v-else-if="n == 11" @click="onInput(0);">
+        <div class="keypad" :ripple="true" v-else-if="n == 11" @click="appendInput(0);">
           <div class="keypad-center">0</div>
         </div>
-        <div class="keypad" v-else-if="n == 12 && onDelete" @click="onDelete(n);">
+        <div class="keypad" v-else-if="n == 12" @click="delInput(n);">
           <div class="keypad-center">
             <strong class="keypad-delete">&laquo;</strong>
           </div>
@@ -26,10 +26,32 @@
 <script>
 export default {
   name: "numeric-keypad",
+  data () {
+    return {
+      inputStr: '',
+    }
+  },
   props: {
-    onInput: { type: Function, required: true },
-    onDelete: { type: Function, required: true },
-    onReset: { type: Function, required: true }
+    initInputVal: { type: String, required: true },
+    setInputVal: { type: Function, required: true },
+  },
+  mounted(){
+    this.inputStr = this.initInputVal;
+  },
+  methods: {
+    appendInput(number){
+      if(number == 0 && this.inputStr.length == 0) return;
+      this.inputStr = this.inputStr + number;
+      this.setInputVal(this.inputStr);
+    },
+    delInput(){
+      this.inputStr = this.inputStr.slice(0, -1);
+      this.setInputVal(this.inputStr);
+    },
+    resetInput(){
+      this.inputStr = '';
+      this.setInputVal(this.inputStr);
+    },
   },
 };
 </script>
@@ -53,13 +75,8 @@ export default {
 }
 
 .keypad-container {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-flex: 1;
-  -ms-flex: 1 1 auto;
   flex: 1 1 auto;
-  -ms-flex-wrap: wrap;
   flex-wrap: wrap;
   min-width: 0;
   flex-direction: row;
@@ -73,8 +90,6 @@ export default {
 
 .keypad-flex {
   flex-basis: 33%;
-  -webkit-box-flex: 0;
-  -ms-flex-positive: 0;
   flex-grow: 0;
   max-width: 33%;
   min-height: 4rem;
