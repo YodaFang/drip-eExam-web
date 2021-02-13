@@ -1,68 +1,36 @@
 <template>
-  <div :class="'keypad-dialog ' + animation">
-    <div class="keypad-container">
-      <div class="keypad-value">
-        <a href="#" @click="closeMe"
-          ><small>{{ close }}</small></a
-        >
-      </div>
-      <template v-for="n in 12">
-        <div :key="n" class="keypad-flex  keypad-class">
-          <div class="keypad" v-if="n == 10 && onReset" @click="onReset">
-            <div class="keypad-center">
-              <strong class="keypad-delete">&copy;</strong>
-            </div>
-          </div>
-          <div
-            class="keypad"
-            :ripple="true"
-            v-if="n != 10 && n != 12"
-            @click="onInput(n);"
-          >
-            <div v-if="n < 10" class="keypad-center">{{ n }}</div>
-            <div v-if="n == 11" class="keypad-center">0</div>
-          </div>
-          <div class="keypad" v-if="n == 12 && onDelete" @click="onDelete(n);">
-            <div v-if="n == 12" class="keypad-center">
-              <strong class="keypad-delete">&laquo;</strong>
-            </div>
+  <div class="keypad-container">
+    <template v-for="n in 12">
+      <div :key="n" class="keypad-flex keypad-class">
+        <div class="keypad" :ripple="true" v-if="n < 10" @click="onInput(n);">
+          <div v-if="n < 10" class="keypad-center">{{ n }}</div>
+        </div>
+        <div class="keypad" v-else-if="n == 10 && onReset" @click="onReset">
+          <div class="keypad-center">
+            <strong class="keypad-delete">&copy;</strong>
           </div>
         </div>
-      </template>
-    </div>
+        <div class="keypad" :ripple="true" v-else-if="n == 11" @click="onInput(0);">
+          <div class="keypad-center">0</div>
+        </div>
+        <div class="keypad" v-else-if="n == 12 && onDelete" @click="onDelete(n);">
+          <div class="keypad-center">
+            <strong class="keypad-delete">&laquo;</strong>
+          </div>
+        </div>
+      </div>
+    </template>
   </div>
 </template>
 
 <script>
 export default {
   name: "numeric-keypad",
-  data: () => ({
-    n: 0,
-    animation: "keypad-hide"
-  }),
   props: {
-    keypadClass: { type: String, default: "keypad-class", required: false },
-    show: { type: Boolean, default: true, required: false },
-    close: { type: String, default: "Close", required: false },
     onInput: { type: Function, required: true },
-    onDelete: { type: Function, required: false },
-    onReset: { type: Function, required: false }
+    onDelete: { type: Function, required: true },
+    onReset: { type: Function, required: true }
   },
-  methods: {
-    closeMe() {
-      this.animation = "slideOutDown";
-    }
-  },
-  watch: {
-    show() {
-      this.animation === "slideInUp"
-        ? (this.animation = "slideOutDown")
-        : (this.animation = "slideInUp");
-    }
-  },
-  mounted() {
-    this.show ? (this.animation = "slideInUp") : (this.animation = "hide");
-  }
 };
 </script>
 
@@ -129,66 +97,5 @@ export default {
 
 .keypad-delete {
   font-size: 1.5rem;
-}
-.slideInUp {
-  -webkit-animation-name: slideInUp;
-  animation-name: slideInUp;
-  -webkit-animation-duration: 1s;
-  animation-duration: 1s;
-  -webkit-animation-fill-mode: both;
-  animation-fill-mode: both;
-}
-@-webkit-keyframes slideInUp {
-  0% {
-    -webkit-transform: translateY(100%);
-    transform: translateY(100%);
-    visibility: visible;
-  }
-  100% {
-    -webkit-transform: translateY(0);
-    transform: translateY(0);
-  }
-}
-@keyframes slideInUp {
-  0% {
-    -webkit-transform: translateY(100%);
-    transform: translateY(100%);
-    visibility: visible;
-  }
-  100% {
-    -webkit-transform: translateY(0);
-    transform: translateY(0);
-  }
-}
-
-.slideOutDown {
-  -webkit-animation-name: slideOutDown;
-  animation-name: slideOutDown;
-  -webkit-animation-duration: 1s;
-  animation-duration: 1s;
-  -webkit-animation-fill-mode: both;
-  animation-fill-mode: both;
-}
-@-webkit-keyframes slideOutDown {
-  0% {
-    -webkit-transform: translateY(0);
-    transform: translateY(0);
-  }
-  100% {
-    visibility: hidden;
-    -webkit-transform: translateY(100%);
-    transform: translateY(100%);
-  }
-}
-@keyframes slideOutDown {
-  0% {
-    -webkit-transform: translateY(0);
-    transform: translateY(0);
-  }
-  100% {
-    visibility: hidden;
-    -webkit-transform: translateY(100%);
-    transform: translateY(100%);
-  }
 }
 </style>
