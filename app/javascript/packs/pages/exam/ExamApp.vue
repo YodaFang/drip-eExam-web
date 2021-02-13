@@ -33,9 +33,18 @@
     <v-main>
       <v-breadcrumbs :items="breadcrumbs"></v-breadcrumbs>
       <v-divider></v-divider>
-      <WordListCard v-if="selectedContent.type == 1" :content="selectedContent" :hasMore="hasMore" :next="next" :back="back"/>
-      <SingleOptionCard v-else-if="selectedContent.type == 2" :content="selectedContent" :hasMore="hasMore" :next="next" :back="back"/>
-      <NumberQuestion/>
+      <v-card flat>
+        <WordListCard v-if="selectedContent.type == 1" :content="selectedContent"/>
+        <SingleOptionCard v-else-if="selectedContent.type == 2" :content="selectedContent" v-model="userAnswer"/>
+        <NumberQuestion v-else-if="selectedContent.type == 3" :content="selectedContent" v-model="userAnswer"/>
+        <v-divider></v-divider>
+        <v-card-actions v-if="answerMode">
+          <v-row class="m-0">
+            <v-col cols="8"><v-btn v-if="hasMore" color="primary" text outlined block @click="next()" ><strong>Next</strong></v-btn></v-col>
+            <v-col cols="4"><v-btn v-if="hasBack" text block outlined @click="back()" >Back</v-btn></v-col>
+          </v-row>
+        </v-card-actions>
+      </v-card>
       <div style="height:80px;"></div>
     </v-main>
     <v-footer color="transparent" max-width="190" class="mx-auto" padless fixed>
@@ -69,6 +78,8 @@ export default {
       value2: 0,
       breadcrumbs: [],
       menuList: this.$root.$data.exam.getIndexArray(),
+      answerMode: true,
+      userAnswer: '',
     }
   },
   beforeCreate(){
@@ -110,6 +121,7 @@ export default {
       }
     },
     next(){
+      console.log(this.userAnswer)
       if(this.$root.$data.exam.next()){
         this.expandMenu();
         this.setCurrent();
