@@ -6,13 +6,13 @@
           <v-btn class="keypad-center text-h5" text block>{{ n }}</v-btn>
         </div>
         <div class="keypad" v-else-if="n == 10" @click="resetInput()">
-          <v-btn class="keypad-center font-weight-bold text-h5" text block>&copy;</v-btn>
+          <v-btn class="keypad-center font-weight-bold text-h4" text block>&copy;</v-btn>
         </div>
         <div class="keypad" v-else-if="n == 11" @click="appendInput(0);">
           <v-btn class="keypad-center text-h5" text block>0</v-btn>
         </div>
         <div class="keypad" v-else-if="n == 12" @click="delInput(n);">
-          <v-btn class="keypad-center font-weight-bold text-h5" text block>&laquo;</v-btn>
+          <v-btn class="keypad-center font-weight-bold text-h4" text block>&laquo;</v-btn>
         </div>
       </div>
     </template>
@@ -21,7 +21,6 @@
 
 <script>
 export default {
-  name: "numeric-keypad",
   data () {
     return {
       inputStr: '',
@@ -32,7 +31,7 @@ export default {
     setInputVal: { type: Function, required: true },
   },
   mounted(){
-    this.inputStr = this.initInputVal;
+    this.inputStr = this.initInputVal || '';
   },
   methods: {
     appendInput(number){
@@ -53,21 +52,10 @@ export default {
 </script>
 
 <style>
-.keypad-hide {
-  visibility: hidden;
-}
-
 .keypad-class {
   color: #888;
   background: #fafafa;
   border: 0.004rem solid #eaeaea;
-}
-
-.keypad-dialog {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
 }
 
 .keypad-container {
@@ -76,12 +64,6 @@ export default {
   flex-wrap: wrap;
   min-width: 0;
   flex-direction: row;
-}
-
-.keypad-value {
-  width: 100%;
-  text-align: right;
-  padding: 0.5rem;
 }
 
 .keypad-flex {
@@ -103,10 +85,5 @@ export default {
   position: relative;
   top: 50%;
   transform: translateY(-50%);
-  font-size: 1.3rem;
-}
-
-.keypad-delete {
-  font-size: 1.5rem;
 }
 </style>
