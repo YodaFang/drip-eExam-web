@@ -2,21 +2,17 @@
   <div class="keypad-container">
     <template v-for="n in 12">
       <div :key="n" class="keypad-flex keypad-class">
-        <div class="keypad" :ripple="true" v-if="n < 10" @click="appendInput(n);">
-          <div v-if="n < 10" class="keypad-center">{{ n }}</div>
+        <div class="keypad" v-if="n < 10" @click="appendInput(n);">
+          <v-btn class="keypad-center text-h5" text block>{{ n }}</v-btn>
         </div>
         <div class="keypad" v-else-if="n == 10" @click="resetInput()">
-          <div class="keypad-center">
-            <strong class="keypad-delete">&copy;</strong>
-          </div>
+          <v-btn class="keypad-center font-weight-bold text-h5" text block>&copy;</v-btn>
         </div>
-        <div class="keypad" :ripple="true" v-else-if="n == 11" @click="appendInput(0);">
-          <div class="keypad-center">0</div>
+        <div class="keypad" v-else-if="n == 11" @click="appendInput(0);">
+          <v-btn class="keypad-center text-h5" text block>0</v-btn>
         </div>
         <div class="keypad" v-else-if="n == 12" @click="delInput(n);">
-          <div class="keypad-center">
-            <strong class="keypad-delete">&laquo;</strong>
-          </div>
+          <v-btn class="keypad-center font-weight-bold text-h5" text block>&laquo;</v-btn>
         </div>
       </div>
     </template>
