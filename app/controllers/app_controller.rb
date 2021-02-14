@@ -3,5 +3,6 @@ class AppController < ApplicationController
   end
 
   def exam
+    params[:exam_id] = 1
   end
 end

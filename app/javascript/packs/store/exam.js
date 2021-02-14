@@ -2,6 +2,7 @@ import request from '@/utils/request'
 
 const taskManager = {
   __isDebug: false,
+  __started: false,
   __sections: [],
   __currentSecIdx: 0,
   __currentItemIdx: 0,
@@ -10,7 +11,11 @@ const taskManager = {
   __indexArray: [],
 
   init() {
-    this.loadExamDetail(1);
+    this.loadExamDetail(Drip.exam_id);
+  },
+
+  isStarted() {
+    this.__started;
   },
 
   loadExamDetail(exam_id) {

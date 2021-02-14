@@ -3,7 +3,7 @@ module ModelSerializer
 
   HASH_ATTRIBUTES = {
     'Drip::User' => [:id, :name, :birth_date, :sex, :phone, :email, :login, { admin: :admin? }],
-    'Drip::Exam' => [:id, :title, :category, :difficult, :finish_time, :question_count, :user_id],
+    'Drip::Exam' => [:id, :title, :description, :category, :difficult, :finish_time, :question_count, :user_id],
     'Drip::ExamSection' => [:id, :title, :points, :question_count],
     'Drip::ExamItem' => [:id, :difficult, :points, :type, :description, { options: :options_array }, :answers, :comments],
     'Drip::Task' => [:id, :title, :type, :finish_time],

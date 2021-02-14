@@ -19,7 +19,7 @@ export default {
   },
   watch: {
     content(newVal, oldVal){
-      this.answer = null;
+      this.answer = newVal.userAnswer || null;
     },
     answer(newVal, oldVal){
       if(newVal == oldVal) return;

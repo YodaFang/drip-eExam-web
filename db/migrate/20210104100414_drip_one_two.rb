@@ -60,6 +60,7 @@ class DripOneTwo < ActiveRecord::Migration[6.0]
 
     create_table :drip_exams do |t|
       t.string :title
+      t.text :description
       t.string :category
       t.integer :difficult
       t.integer :finish_time

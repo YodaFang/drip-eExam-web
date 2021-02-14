@@ -1,8 +1,28 @@
 <template>
 <v-card style="margin:0 auto;" max-width="1260px">
-  <LoadingDialog />
-  <AlertSnackbar />
-  <v-app id="task-app">
+  <v-overlay v-once v-if="!examStarted">
+    <v-card class="mx-auto" max-width="680px" outlined>
+      <v-list-item three-line>
+        <v-list-item-content>
+          <div class="overline mb-4">
+            OVERLINE
+          </div>
+          <v-list-item-title class="headline mb-1">
+            Headline 5
+          </v-list-item-title>
+          <v-list-item-subtitle>Greyhound divisely hello coldly fonwderfully</v-list-item-subtitle>
+        </v-list-item-content>
+      </v-list-item>
+      <v-card-actions>
+        <v-btn outlined block text @click="examStarted = true;">
+          开 始 测 试
+        </v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-overlay>
+  <v-app id="task-app" v-else>
+    <LoadingDialog />
+    <AlertSnackbar />
     <v-system-bar app dark color="blue lighten-1">
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
       <v-spacer></v-spacer>
@@ -69,11 +89,12 @@ export default {
   },
   data(){
     return {
+      examStarted: this.$root.$data.exam.isStarted(),
       selectedItem: 0,
       selectedContent: {},
       hasBack: false,
       hasMore: true,
-      drawer: null,
+      drawer: true,
       value1: 100,
       value2: 0,
       breadcrumbs: [],

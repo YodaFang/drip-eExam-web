@@ -18,6 +18,15 @@ export default {
       number: '',
     }
   },
+  watch: {
+    content(newVal, oldVal){
+      this.number = newVal.userAnswer || null;
+    },
+    answer(newVal, oldVal){
+      if(newVal == oldVal) return;
+      this.$emit('input', this.answer)
+    },
+  },
   methods: {
     setNumberVal(val) {
       this.number = val;
