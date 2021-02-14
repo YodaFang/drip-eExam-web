@@ -99,43 +99,24 @@ class DripOneTwo < ActiveRecord::Migration[6.0]
       t.references :user
       t.references :user_task_record
       t.references :exam_item
-      t.text :answer
+      t.text :user_answer
       t.integer :correctness,   default: 0
       t.integer :score
 
       t.timestamps
     end
 
-    create_table :drip_tasks do |t|
-      t.string :title
-      t.string :type
-      t.datetime :finish_time
-      t.integer :status,   default: 0
-      t.references :user
-
-      t.timestamps
-    end
-    add_index :drip_tasks, [:title],          name: 'index_tasks_on_title'
-    add_index :drip_tasks, [:type],          name: 'index_tasks_on_type'
-    add_index :drip_tasks, [:status],          name: 'index_tasks_on_status'
-
-    create_table :drip_task_steps do |t|
-      t.references :task
-      t.string :title
-      t.string :action
-      t.string :target_type
-      t.integer :target_id
-    end
-
     create_table :drip_user_task_records do |t|
       t.references :user
-      t.references :task
+      t.string :target_type
+      t.integer :target_id
       t.integer :status,   default: 0
       t.integer :percent,   default: 0
       t.integer :score
 
       t.timestamps
     end
-    add_index :drip_user_task_records, [:status],          name: 'index_user_task_records_on_status'
+    add_index :drip_user_task_records, [:status],                     name: 'index_user_task_records_on_status'
+    add_index :drip_user_task_records, [:target_id, :target_type],    name: 'index_user_task_records_on_target'
   end
 end

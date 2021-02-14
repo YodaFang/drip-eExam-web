@@ -1,6 +1,8 @@
 <template>
-<v-card style="margin:0 auto;" max-width="1260px">
-  <v-overlay v-once v-if="!examStarted">
+<v-app id="task-app">
+  <LoadingDialog />
+  <SignInUpModal />
+  <v-overlay v-once v-if="showConfirm && !showExam">
     <v-card class="mx-auto" max-width="680px" outlined>
       <v-list-item three-line>
         <v-list-item-content>
@@ -14,14 +16,13 @@
         </v-list-item-content>
       </v-list-item>
       <v-card-actions>
-        <v-btn outlined block text @click="examStarted = true;">
+        <v-btn outlined block text @click="loadExam()">
           开 始 测 试
         </v-btn>
       </v-card-actions>
     </v-card>
   </v-overlay>
-  <v-app id="task-app" v-else>
-    <LoadingDialog />
+  <v-card style="margin:0 auto;" max-width="1260px" v-else-if="!showConfirm && showExam">
     <AlertSnackbar />
     <v-system-bar app dark color="blue lighten-1">
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
@@ -31,7 +32,7 @@
     </v-system-bar>
     <v-navigation-drawer v-model="drawer" absolute app>
       <v-list expand>
-        <v-list-item-group mandatory color="success" v-model="selectedItem">
+        <v-list-item-group mandatory color="success" v-model="selectedIdx">
           <template v-once v-for="(m, j) in menuList">
             <v-list-group no-action eager v-if="m.length > 1" :key="j" :value="true" :id="`menu-group-${j}`">
               <template v-slot:activator>
@@ -74,8 +75,8 @@
         <v-progress-circular :rotate="90" :size="85" :width="10" :value="value2" color="purple">{{ value2 }} / 100</v-progress-circular>
       </v-row>
     </v-footer>
-  </v-app>
-</v-card>
+  </v-card>
+</v-app>
 </template>
 
 <script>
@@ -86,11 +87,13 @@ export default {
     SingleOptionCard: () => import('./views/SingleOptionCard'),
     WordListCard: () => import('./views/WordListCard'),
     NumberQuestion: () => import('./views/NumberQuestionCard'),
+    SignInUpModal: () => import('@/components/SignInUpModal'),
   },
   data(){
     return {
-      examStarted: this.$root.$data.exam.isStarted(),
-      selectedItem: 0,
+      showConfirm: false,
+      showExam: false,
+      selectedIdx: 0,
       selectedContent: {},
       hasBack: false,
       hasMore: true,
@@ -98,16 +101,16 @@ export default {
       value1: 100,
       value2: 0,
       breadcrumbs: [],
-      menuList: this.$root.$data.exam.getIndexArray(),
+      menuList: [],
       answerMode: true,
       userAnswer: '',
     }
   },
   beforeCreate(){
-    this.$root.$data.init();
+    //this.$root.$data.init();
   },
   mounted(){
-    this.setCurrent();
+    this.$root.$data.isShowSignInUp = true;
 
     this.interval = setInterval(() => {
       if (this.value1 == 0) {
@@ -123,6 +126,13 @@ export default {
   watch: {
   },
   methods: {
+    loadExam(){
+      this.$root.$data.exam.loadExamDetail();
+      this.showConfirm = false;
+      this.showExam = true;
+      this.menuList = this.$root.$data.exam.getIndexArray();
+      this.setCurrent();
+    },
     menuTitle(secIdx){
       return this.$root.$data.exam.getSection(secIdx).title;
     },
@@ -130,7 +140,7 @@ export default {
       return itemIdx + 1;
     },
     setCurrent(){
-      this.selectedItem = this.$root.$data.exam.getCurrentIdx();
+      this.selectedIdx = this.$root.$data.exam.getCurrentIdx();
       this.selectedContent = this.$root.$data.exam.getCurrentItem();
       this.hasMore = this.$root.$data.exam.hasNext();
       this.hasBack = this.$root.$data.exam.hasBack();

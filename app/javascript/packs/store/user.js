@@ -24,73 +24,53 @@ const user = {
     let token_94 = Cookies.get('token_94');
     if (!token_94) return false;
     const _this = this;
-    request.post(
-      '/loginByToken',
-      { token_94: token_94 },
-      resData => {
-        if(resData.success){
-          _this.__name = resData.user_info.name;
-          _this.__login = resData.user_info.login;
-          Cookies.set('token_94', resData.remember_token);
-        }
-        if(doneCallBack) doneCallBack(resData.success);
-      },
-      err => {
-        if(failCallBack) failCallBack(err);
+    request.post('/loginByToken', { token_94: token_94 }).then((resData) => {
+      if(resData.success){
+        _this.__name = resData.user_info.name;
+        _this.__login = resData.user_info.login;
+        Cookies.set('token_94', resData.remember_token);
       }
-    )
+      if(doneCallBack) doneCallBack(resData.success);
+    }).catch((err) => {
+      if(failCallBack) failCallBack(err);
+    })
   },
 
   loginByAcount(params, doneCallBack = null, failCallBack = null){
     const _this = this;
-    request.post(
-      '/loginByAcount',
-      params,
-      resData => {
-        if(resData.success){
-          _this.__name = resData.user_info.name;
-          _this.__login = resData.user_info.login;
-          Cookies.set('token_94', resData.remember_token);
-        }
-        if(doneCallBack) doneCallBack(resData.success);
-      },
-      err => {
-        if(failCallBack) failCallBack(err);
+    request.post('/loginByAcount', params).then((resData) => {
+      if(resData.success){
+        _this.__name = resData.user_info.name;
+        _this.__login = resData.user_info.login;
+        Cookies.set('token_94', resData.remember_token);
       }
-    )
+      if(doneCallBack) doneCallBack(resData.success);
+    }).catch((err) => {
+      if(failCallBack) failCallBack(err);
+    })
   },
 
   accountCheck(login, doneCallBack = null, failCallBack = null) {
     const _this = this;
-    request.get(
-      '/register_check',
-      { login: login },
-      (resData) => {
-        if(doneCallBack) doneCallBack(resData.success);
-      },
-      err => {
-        if(failCallBack) failCallBack(err);
-      }
-    )
+    request.get('/register_check',{ login: login }).then((resData) => {
+      if(doneCallBack) doneCallBack(resData.success);
+    }).catch((err) => {
+      if(failCallBack) failCallBack(err);
+    })
   },
 
   register(params, doneCallBack = null, failCallBack = null) {
     const _this = this;
-    request.post(
-      '/register',
-      params,
-      resData => {
-        if(resData.success){
-          _this.__name = resData.user_info.name;
-          _this.__login = resData.user_info.login;
-          Cookies.set('token_94', resData.remember_token);
-        }
-        if(doneCallBack) doneCallBack(resData.success);
-      },
-      err => {
-        if(failCallBack) failCallBack(err);
+    request.post('/register', params).then((resData) => {
+      if(resData.success){
+        _this.__name = resData.user_info.name;
+        _this.__login = resData.user_info.login;
+        Cookies.set('token_94', resData.remember_token);
       }
-    )
+      if(doneCallBack) doneCallBack(resData.success);
+    }).catch((err) => {
+      if(failCallBack) failCallBack(err);
+    })
   },
 
   setDebug(v) {

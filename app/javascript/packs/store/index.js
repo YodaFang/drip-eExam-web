@@ -5,6 +5,7 @@ const store = {
   errorMessages: null,
   isShowLoading: false,
   isShowAlerts: false,
+  isShowSignInUp: false,
   maxWidth: 1260,
   home: null,
   user: null,

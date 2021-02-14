@@ -32,7 +32,7 @@ module Drip
       Drip::User.active.find_by(login: params[:login]) if params[:login].present?
     end
 
-    def unauthorized!(json_data)
+    def unauthorized!(json_data = nil)
       render(json: (json_data || { success: false, error: 'You are not authorized to perform that action.' }), status: 401) && return
     end
 
@@ -41,6 +41,10 @@ module Drip
                     "#{resource.errors.full_messages.inspect}"
       Rails.logger.error log_message
       render(json: json_data || { success: false, error: log_message }, status: 422) && return
+    end
+
+    def authenticate_user
+      return unauthorized! if current_user.blank?
     end
   end
 end

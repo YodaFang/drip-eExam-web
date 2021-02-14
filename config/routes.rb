@@ -16,5 +16,6 @@ Rails.application.routes.draw do
 
   get 'app/exam'
   get 'exam', to: 'app#exam'
-  get 'exam/detail', to: 'drip/exams#detail'
+  get 'exam/summary', to: 'drip/exams#summary'
+  get 'exam/startOrContinue', to: 'drip/exams#start_continue'
 end

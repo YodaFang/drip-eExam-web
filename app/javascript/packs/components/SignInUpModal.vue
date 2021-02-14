@@ -118,29 +118,25 @@
 
 <script>
 import validateRules from  '@/utils/validate_rules'
-
 export default {
-  data(){
-    return {
-      tabs: null,
-      signInValid: true,
-      signUpValid: true,
-      showModal: false,
-      showPassword: false,
-      name: '',
-      login: '',
-      password: '',
-      passwordConfirm: '',
-      loginError: '',
-    }
-  },
+  data: () => ({
+    tabs: null,
+    signInValid: true,
+    signUpValid: true,
+    showModal: false,
+    showPassword: false,
+    name: '',
+    login: '',
+    password: '',
+    passwordConfirm: '',
+    loginError: '',
+  }),
   methods: {
     rules(){
       return validateRules;
     },
     signIn() {
       if(!this.$refs.signInForm.validate()) return false;
-
       const _this = this
       this.$root.$data.user.loginByAcount(
         { login: this.login, password: this.password },
@@ -151,12 +147,10 @@ export default {
     },
     accountCheck() {
       if(!this.$refs.loginField.validate()) return false;
-
       this.$root.$data.user.accountCheck(this.login);
     },
     signUp() {
       if(!this.$refs.signUpForm.validate()) return false;
-
       const _this = this
       this.$root.$data.user.register(
         { name: this.name, login: this.login, password: this.password, passwordConfirm: this.passwordConfirm },

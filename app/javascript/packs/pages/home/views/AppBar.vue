@@ -43,8 +43,8 @@ export default {
   name: 'AppHeaderBar',
 
   components: {
-      SignInUpModal: () => import('@/components/SignInUpModal'),
-      UserProfileModal: () => import('@/components/UserProfileModal'),
+    SignInUpModal: () => import('@/components/SignInUpModal'),
+    UserProfileModal: () => import('@/components/UserProfileModal'),
   },
 
   data: () => ({

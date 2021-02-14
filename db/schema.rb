@@ -48,6 +48,7 @@ ActiveRecord::Schema.define(version: 2021_01_04_100414) do
 
   create_table "drip_exams", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.string "title"
+    t.text "description"
     t.string "category"
     t.integer "difficult"
     t.integer "finish_time"
@@ -80,29 +81,6 @@ ActiveRecord::Schema.define(version: 2021_01_04_100414) do
     t.index ["type"], name: "index_questions_on_type"
   end
 
-  create_table "drip_task_steps", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
-    t.bigint "task_id"
-    t.string "title"
-    t.string "action"
-    t.string "target_type"
-    t.integer "target_id"
-    t.index ["task_id"], name: "index_drip_task_steps_on_task_id"
-  end
-
-  create_table "drip_tasks", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
-    t.string "title"
-    t.string "type"
-    t.datetime "finish_time"
-    t.integer "status", default: 0
-    t.bigint "user_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["status"], name: "index_tasks_on_status"
-    t.index ["title"], name: "index_tasks_on_title"
-    t.index ["type"], name: "index_tasks_on_type"
-    t.index ["user_id"], name: "index_drip_tasks_on_user_id"
-  end
-
   create_table "drip_user_actions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.bigint "user_id"
     t.string "action"
@@ -117,7 +95,7 @@ ActiveRecord::Schema.define(version: 2021_01_04_100414) do
     t.bigint "user_id"
     t.bigint "user_task_record_id"
     t.bigint "exam_item_id"
-    t.text "answer"
+    t.text "user_answer"
     t.integer "correctness", default: 0
     t.integer "score"
     t.datetime "created_at", precision: 6, null: false
@@ -129,14 +107,15 @@ ActiveRecord::Schema.define(version: 2021_01_04_100414) do
 
   create_table "drip_user_task_records", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.bigint "user_id"
-    t.bigint "task_id"
+    t.string "target_type"
+    t.integer "target_id"
     t.integer "status", default: 0
     t.integer "percent", default: 0
     t.integer "score"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["status"], name: "index_user_task_records_on_status"
-    t.index ["task_id"], name: "index_drip_user_task_records_on_task_id"
+    t.index ["target_id", "target_type"], name: "index_user_task_records_on_target"
     t.index ["user_id"], name: "index_drip_user_task_records_on_user_id"
   end
 

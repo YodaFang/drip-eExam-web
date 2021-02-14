@@ -3,6 +3,9 @@ import request from '@/utils/request'
 const taskManager = {
   __isDebug: false,
   __started: false,
+  __examId: null,
+  __title: '',
+  __description: '',
   __sections: [],
   __currentSecIdx: 0,
   __currentItemIdx: 0,
@@ -11,18 +14,33 @@ const taskManager = {
   __indexArray: [],
 
   init() {
-    this.loadExamDetail(Drip.exam_id);
+    this.__examId = Drip.exam_id
+    this.loadExamSummary();
   },
 
   isStarted() {
     this.__started;
   },
 
-  loadExamDetail(exam_id) {
+  loadExamSummary() {
     const _this = this
-    request.syncGet('/exam/detail', { id: exam_id },
+    request.syncGet('/exam/summary', { id: this.__examId },
       (resData) => {
-        _this.__sections = resData.exam.exam_sections;
+        _this.__title = resData.exam_summary.title;
+        _this.__description = resData.exam_summary.description;
+        _this.__started = resData.started;
+      },
+      (err) => {
+        console.log(err)
+      }
+    )
+  },
+
+  loadExamDetail() {
+    const _this = this
+    request.syncGet('/exam/startOrContinue', { id: this.__examId },
+      (resData) => {
+        _this.__sections = resData.exam_detail.exam_sections;
         let secLength = _this.__sections.length;
         _this.__indexArray = new Array(secLength);
         _this.__endingSecIdx = secLength - 1;
@@ -37,7 +55,7 @@ const taskManager = {
         _this.__currentSecIdx = 0;
         _this.__currentItemIdx = 0;
       },
-      err => {
+      (err) => {
         console.log(err)
       }
     )

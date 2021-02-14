@@ -6,16 +6,15 @@ module ModelSerializer
     'Drip::Exam' => [:id, :title, :description, :category, :difficult, :finish_time, :question_count, :user_id],
     'Drip::ExamSection' => [:id, :title, :points, :question_count],
     'Drip::ExamItem' => [:id, :difficult, :points, :type, :description, { options: :options_array }, :answers, :comments],
-    'Drip::Task' => [:id, :title, :type, :finish_time],
-    'Drip::TaskStep' => [:id, :title, :action, :target_type],
+    'Drip::UserTaskRecord' => [:id, :user_id, :percent, :score],
+    'Drip::UserExamRecord' => [:id, :user_answer, :exam_item_id, :correctness],
     'Drip::Question' => [:id, :category, :type, :difficult, :points, :description, :options, :answers, :comments],
   }
 
   HASH_INCLUDES = {
     'Drip::Exam' => [:exam_sections],
     'Drip::ExamSection' => [{ items: :exam_items }],
-    'Drip::Task' => [:task_steps],
-    'Drip::TaskStep' => [:target],
+    'Drip::UserTaskRecord' => [:user_exam_records],
   }
 
   def hash_record(resource, includes_ind: false, attr_hash: HASH_ATTRIBUTES, includes_hash: HASH_INCLUDES)
