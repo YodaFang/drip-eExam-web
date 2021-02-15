@@ -1,9 +1,5 @@
 <template>
-  <v-dialog
-    v-model="showModal"
-    max-width="460px"
-    transition="dialog-top-transition"
-  >
+  <v-dialog v-model="showModal" max-width="460px" transition="dialog-top-transition">
     <template v-slot:activator="{ on, attrs }">
       <v-chip outlined v-bind="attrs" v-on="on" class="font-weight-bold">
         登录 / 注册
@@ -21,11 +17,7 @@
       <v-tab-item value="sign-in-up-tabs-1">
         <v-card>
           <v-card-text>
-            <v-form
-              v-model="signInValid"
-              ref="signInForm"
-              lazy-validation
-            >
+            <v-form v-model="signInValid" ref="signInForm" lazy-validation>
               <v-text-field
                 label="账 号*"
                 hint="通常是你的手机号"
@@ -58,11 +50,7 @@
       <v-tab-item value="sign-in-up-tabs-2">
         <v-card>
           <v-card-text>
-            <v-form
-              v-model="signUpValid"
-              ref="signUpForm"
-              lazy-validation
-            >
+            <v-form v-model="signUpValid" ref="signUpForm" lazy-validation>
               <v-text-field
                 label="账 号 名*"
                 hint="给你账号取个名字吧"
@@ -139,7 +127,7 @@ export default {
       if(!this.$refs.signInForm.validate()) return false;
       const _this = this
       this.$root.$data.user.loginByAcount(
-        { login: this.login, password: this.password },
+        { login: _this.login, password: _this.password },
         (success) => {
           if(success) _this.showModal = false;
         }
@@ -153,7 +141,7 @@ export default {
       if(!this.$refs.signUpForm.validate()) return false;
       const _this = this
       this.$root.$data.user.register(
-        { name: this.name, login: this.login, password: this.password, passwordConfirm: this.passwordConfirm },
+        { name: _this.name, login: _this.login, password: _this.password, passwordConfirm: _this.passwordConfirm },
         (success) => {
           if(success) _this.showModal = false;
         }
