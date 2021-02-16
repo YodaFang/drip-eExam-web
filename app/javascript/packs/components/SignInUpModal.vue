@@ -107,18 +107,29 @@
 <script>
 import validateRules from  '@/utils/validate_rules'
 export default {
-  data: () => ({
-    tabs: null,
-    signInValid: true,
-    signUpValid: true,
-    showModal: false,
-    showPassword: false,
-    name: '',
-    login: '',
-    password: '',
-    passwordConfirm: '',
-    loginError: '',
-  }),
+  data(){
+    return {
+      tabs: null,
+      signInValid: true,
+      signUpValid: true,
+      showPassword: false,
+      name: '',
+      login: '',
+      password: '',
+      passwordConfirm: '',
+      loginError: '',
+    }
+  },
+  computed: {
+    showModal:{
+      get(){
+        return this.$root.$data.isShowSignInUp;
+      },
+      set(v){
+        this.$root.$data.isShowSignInUp = v;
+      }
+    }
+  },
   methods: {
     rules(){
       return validateRules;

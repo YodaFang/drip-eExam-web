@@ -51,7 +51,6 @@ const user = {
   },
 
   accountCheck(login, doneCallBack = null, failCallBack = null) {
-    const _this = this;
     request.get('/register_check',{ login: login }).then((resData) => {
       if(doneCallBack) doneCallBack(resData.success);
     }).catch((err) => {

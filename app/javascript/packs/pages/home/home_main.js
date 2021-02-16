@@ -9,7 +9,7 @@ import user from '@/store/user'
 Object.defineProperty(store, "user", {
   value: user,
   writable: false,
-  configurable: false
+  configurable: true
 });
 
 new Vue({
@@ -19,9 +19,3 @@ new Vue({
     render: h => h(App),
     el: '#home_app'
 }).$mount();
-
-// Vue初始化完后将对象属性设置为不被修改
-Object.defineProperty(store, "user", {
-  writable: false,
-  configurable: false
-});
