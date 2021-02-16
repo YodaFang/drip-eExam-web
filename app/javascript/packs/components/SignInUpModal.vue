@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="showModal" max-width="460px" transition="dialog-top-transition">
+  <v-dialog v-model="showModal" :persistent="dialogPersistent" max-width="460px" transition="dialog-top-transition">
     <v-tabs v-model="tabs" fixed-tabs>
       <v-tab href="#sign-in-up-tabs-1" class="primary--text" >
         <span class="headline">登 录</span>
@@ -114,6 +114,9 @@ export default {
       passwordConfirm: '',
       loginError: '',
     }
+  },
+  props: {
+    dialogPersistent: { type: Boolean, required: false, default: false },
   },
   computed: {
     showModal:{

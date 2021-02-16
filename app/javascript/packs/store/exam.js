@@ -2,6 +2,8 @@ import request from '@/utils/request'
 
 const taskManager = {
   __isDebug: false,
+  summaryLoaded: false,
+  detailsLoaded: false,
   __started: false,
   __examId: null,
   __title: '',
@@ -15,7 +17,7 @@ const taskManager = {
 
   init() {
     this.__examId = Drip.exam_id
-    this.loadExamSummary();
+    //this.loadExamSummary();
   },
 
   isStarted() {
@@ -24,41 +26,33 @@ const taskManager = {
 
   loadExamSummary() {
     const _this = this
-    request.syncGet('/exam/summary', { id: this.__examId },
-      (resData) => {
-        _this.__title = resData.exam_summary.title;
-        _this.__description = resData.exam_summary.description;
-        _this.__started = resData.started;
-      },
-      (err) => {
-        console.log(err)
-      }
-    )
+    request.get('/exam/summary', { id: this.__examId }).then((resData) => {
+      _this.__title = resData.exam_summary.title;
+      _this.__description = resData.exam_summary.description;
+      _this.__started = resData.started;
+      _this.summaryLoaded = true;
+    })
   },
 
   loadExamDetail() {
     const _this = this
-    request.syncGet('/exam/startOrContinue', { id: this.__examId },
-      (resData) => {
-        _this.__sections = resData.exam_detail.exam_sections;
-        let secLength = _this.__sections.length;
-        _this.__indexArray = new Array(secLength);
-        _this.__endingSecIdx = secLength - 1;
-        _this.__endingItemIdx = _this.__sections[_this.__endingSecIdx].items.length - 1;
-        for(let i=0; i < secLength; i++){
-          let itemLen = _this.__sections[i].items.length;
-          _this.__indexArray[i] = new Array(itemLen);
-          for(let j=0; j < itemLen; j++){
-            _this.__indexArray[i][j] = _this.generateIdx(i, j);
-          }
+    request.get('/exam/startOrContinue', { id: this.__examId }).then((resData) => {
+      _this.__sections = resData.exam_detail.exam_sections;
+      let secLength = _this.__sections.length;
+      _this.__indexArray = new Array(secLength);
+      _this.__endingSecIdx = secLength - 1;
+      _this.__endingItemIdx = _this.__sections[_this.__endingSecIdx].items.length - 1;
+      for(let i=0; i < secLength; i++){
+        let itemLen = _this.__sections[i].items.length;
+        _this.__indexArray[i] = new Array(itemLen);
+        for(let j=0; j < itemLen; j++){
+          _this.__indexArray[i][j] = _this.generateIdx(i, j);
         }
-        _this.__currentSecIdx = 0;
-        _this.__currentItemIdx = 0;
-      },
-      (err) => {
-        console.log(err)
       }
-    )
+      _this.__currentSecIdx = 0;
+      _this.__currentItemIdx = 0;
+      _this.detailsLoaded = true;
+    })
   },
 
   getIndexArray() {

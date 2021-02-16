@@ -14,7 +14,6 @@ const store = {
   __userName: '',
   __userLogin: '',
 
-
   init() {
     this.loginByToken();
     if(this.home){
@@ -36,12 +35,20 @@ const store = {
     this.isShowSignInUp = true;
   },
 
+  hideSignInUp(){
+    this.isShowSignInUp = false;
+  },
+
   showLoading(){
     this.isShowLoading = true;
   },
 
   hideLoading(){
     this.isShowLoading = false;
+  },
+
+  isLogin(){
+    return this.__userName && this.__userName.length > 0;
   },
 
   userName(){
@@ -56,6 +63,7 @@ const store = {
 
   loginByToken(doneCallBack = null, failCallBack = null){
     let token_94 = Cookies.get('token_94');
+    console.log(token_94)
     if (!token_94) return false;
     const _this = this;
     request.post('/loginByToken', { token_94: token_94 }).then((resData) => {

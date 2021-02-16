@@ -51,7 +51,7 @@ export default {
       return this.$root.$data.userName();
     },
     isLogin(){
-      return this.userName && this.userName.length > 0;
+      return this.$root.$data.isLogin();
     }
   },
   methods: {

@@ -7,7 +7,7 @@ import exam from '@/store/exam'
 // Vue需要对data中数据添加些方法属性，从而能够监听data，所以需要将对象设置为可被修改
 Object.defineProperty(store, "exam", {
   value: exam,
-  writable: false,
+  writable: true,
   configurable: true
 });
 

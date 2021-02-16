@@ -1,18 +1,22 @@
 import axios from 'axios'
 import store from '@/store/index'
+import Cookies from 'js-cookie'
 
 const request = function(loadtip, url, params, method) {
-  let query = {
+  let token_94 = Cookies.get('token_94');
+  console.log(token_94)
+  if(token_94) params.token_94 = token_94;
+  let config = {
     // baseURL: '/api',
     url: url,
     method: method,
-    timeout: 5000,
+    timeout: 3000,
     data: params,
   }
-  return axios.request(query).then(res => {
+  return axios.request(config).then(res => {
     return Promise.resolve(res.data);
   }).catch(err => {
-    if(err.response && err.response.status == 488){
+    if(err.response && (err.response.status == 488 || err.response.status == 401)){
       if(err.response.data.errors) store.showErrors(err.response.data.errors)
     } else {
       console.log(err)
@@ -30,10 +34,12 @@ export default {
     return request(false, url, params, 'post')
   },
   get: function(url, params) {
-    return axios.get(url, {params: params}).then(res => {
+    let token_94 = Cookies.get('token_94');
+    if(token_94) params.token_94 = token_94;
+    return axios.get(url, { params: params }).then(res => {
       return Promise.resolve(res.data);
     }).catch(err => {
-      if(err.response && err.response.status == 488){
+      if(err.response && (err.response.status == 488 || err.response.status == 401)){
         if(err.response.data.errors) store.showErrors(err.response.data.errors)
       } else {
         console.log(err)

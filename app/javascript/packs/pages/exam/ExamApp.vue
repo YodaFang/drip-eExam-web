@@ -1,8 +1,8 @@
 <template>
-<v-app id="task-app">
+<v-card style="margin:0 auto;" max-width="1260px">
   <LoadingDialog />
-  <SignInUpModal />
-  <v-overlay v-once v-if="showConfirm && !showExam">
+  <SignInUpModal :dialogPersistent="true" />
+  <v-overlay v-once v-if="isLogin && summaryLoaded && !detailsLoaded">
     <v-card class="mx-auto" max-width="680px" outlined>
       <v-list-item three-line>
         <v-list-item-content>
@@ -22,7 +22,7 @@
       </v-card-actions>
     </v-card>
   </v-overlay>
-  <v-card style="margin:0 auto;" max-width="1260px" v-else-if="!showConfirm && showExam">
+  <v-app id="task-app" v-else-if="isLogin && detailsLoaded">
     <AlertSnackbar />
     <v-system-bar app dark color="blue lighten-1">
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
@@ -75,8 +75,8 @@
         <v-progress-circular :rotate="90" :size="85" :width="10" :value="value2" color="purple">{{ value2 }} / 100</v-progress-circular>
       </v-row>
     </v-footer>
-  </v-card>
-</v-app>
+  </v-app>
+</v-card>
 </template>
 
 <script>
@@ -107,10 +107,10 @@ export default {
     }
   },
   beforeCreate(){
-    //this.$root.$data.init();
+    this.$root.$data.init();
   },
   mounted(){
-    this.$root.$data.isShowSignInUp = true;
+    if(!this.isLogin) this.$root.$data.showSignInUp();
 
     this.interval = setInterval(() => {
       if (this.value1 == 0) {
@@ -122,16 +122,36 @@ export default {
     }, 3000);
   },
   computed: {
+    userName(){
+      return this.$root.$data.userName();
+    },
+    isLogin(){
+      return this.$root.$data.isLogin();
+    },
+    summaryLoaded(){
+      return this.$root.$data.exam.summaryLoaded;
+    },
+    detailsLoaded(){
+      return this.$root.$data.exam.detailsLoaded;
+    },
   },
   watch: {
+    isLogin(newVal, oldVal){
+      if(newVal && !this.summaryLoaded){
+        this.$root.$data.hideSignInUp();
+        this.$root.$data.exam.loadExamSummary();
+      }
+    },
+    detailsLoaded(newVal, oldVal){
+      if(this.isLogin && newVal){
+        this.menuList = this.$root.$data.exam.getIndexArray();
+        this.setCurrent();
+      }
+    }
   },
   methods: {
     loadExam(){
       this.$root.$data.exam.loadExamDetail();
-      this.showConfirm = false;
-      this.showExam = true;
-      this.menuList = this.$root.$data.exam.getIndexArray();
-      this.setCurrent();
     },
     menuTitle(secIdx){
       return this.$root.$data.exam.getSection(secIdx).title;
