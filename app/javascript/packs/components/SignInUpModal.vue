@@ -1,10 +1,5 @@
 <template>
   <v-dialog v-model="showModal" max-width="460px" transition="dialog-top-transition">
-    <template v-slot:activator="{ on, attrs }">
-      <v-chip outlined v-bind="attrs" v-on="on" class="font-weight-bold">
-        登录 / 注册
-      </v-chip>
-    </template>
     <v-tabs v-model="tabs" fixed-tabs>
       <v-tab href="#sign-in-up-tabs-1" class="primary--text" >
         <span class="headline">登 录</span>
@@ -137,7 +132,7 @@ export default {
     signIn() {
       if(!this.$refs.signInForm.validate()) return false;
       const _this = this
-      this.$root.$data.user.loginByAcount(
+      this.$root.$data.loginByAcount(
         { login: _this.login, password: _this.password },
         (success) => {
           if(success) _this.showModal = false;
@@ -146,12 +141,12 @@ export default {
     },
     accountCheck() {
       if(!this.$refs.loginField.validate()) return false;
-      this.$root.$data.user.accountCheck(this.login);
+      this.$root.$data.accountCheck(this.login);
     },
     signUp() {
       if(!this.$refs.signUpForm.validate()) return false;
       const _this = this
-      this.$root.$data.user.register(
+      this.$root.$data.register(
         { name: _this.name, login: _this.login, password: _this.password, passwordConfirm: _this.passwordConfirm },
         (success) => {
           if(success) _this.showModal = false;

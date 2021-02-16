@@ -24,7 +24,10 @@
         </v-list-item>
       </v-list>
     </v-menu>
-    <SignInUpModal v-else/>
+    <v-chip v-else outlined class="font-weight-bold" @click="showSignInUp">
+      登录 / 注册
+    </v-chip>
+    <SignInUpModal/>
   </v-app-bar>
 </template>
 
@@ -45,7 +48,7 @@ export default {
   },
   computed: {
     userName(){
-      return this.$root.$data.user.name();
+      return this.$root.$data.userName();
     },
     isLogin(){
       return this.userName && this.userName.length > 0;
@@ -53,8 +56,11 @@ export default {
   },
   methods: {
     logout(){
-      this.$root.$data.user.logout();
-    }
+      this.$root.$data.logout();
+    },
+    showSignInUp(){
+      this.$root.$data.showSignInUp();
+    },
   }
 }
 
