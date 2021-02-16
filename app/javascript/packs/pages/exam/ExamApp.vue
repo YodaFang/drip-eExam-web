@@ -1,6 +1,7 @@
 <template>
 <v-card style="margin:0 auto;" max-width="1260px">
   <LoadingDialog />
+  <AlertSnackbar />
   <SignInUpModal :dialogPersistent="true" />
   <v-overlay v-once v-if="isLogin && summaryLoaded && !detailsLoaded">
     <v-card class="mx-auto" max-width="680px" outlined>
@@ -23,7 +24,6 @@
     </v-card>
   </v-overlay>
   <v-app id="task-app" v-else-if="isLogin && detailsLoaded">
-    <AlertSnackbar />
     <v-system-bar app dark color="blue lighten-1">
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
       <v-spacer></v-spacer>

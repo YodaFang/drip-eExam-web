@@ -1,5 +1,5 @@
 <template>
-  <v-overlay :value="isShowLoading">
+  <v-overlay :value="showLoading">
     <v-progress-circular indeterminate color="blue light-4" size="88" width="8"></v-progress-circular>
   </v-overlay>
 </template>
@@ -8,7 +8,7 @@
 export default {
   name: 'LoadingDialog',
   computed: {
-    isShowLoading:{
+    showLoading:{
       get(){
         return this.$root.$data.isShowLoading;
       },
