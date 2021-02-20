@@ -63,7 +63,6 @@ const store = {
 
   loginByToken(doneCallBack = null, failCallBack = null){
     let token_94 = Cookies.get('token_94');
-    console.log(token_94)
     if (!token_94) return false;
     const _this = this;
     request.post('/loginByToken', { token_94: token_94 }).then((resData) => {

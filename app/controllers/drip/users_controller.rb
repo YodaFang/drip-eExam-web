@@ -38,7 +38,7 @@ class Drip::UsersController < Drip::BaseController
     if @user.present?
       render_success_payload_with_user_info
     else
-      render_failure_with_messages('token信息错误！')
+      render_payload({ success: false, msg: 'token登录失败！' })
     end
   end
 

@@ -4,17 +4,19 @@ module ModelSerializer
   HASH_ATTRIBUTES = {
     'Drip::User' => [:id, :name, :birth_date, :sex, :phone, :email, :login, { admin: :admin? }],
     'Drip::Exam' => [:id, :title, :description, :category, :difficult, :finish_time, :question_count, :user_id],
-    'Drip::ExamSection' => [:id, :title, :points, :question_count],
-    'Drip::ExamItem' => [:id, :difficult, :points, :type, :description, { options: :options_array }, :answers, :comments],
+    'Drip::ExamSection' => [:id, :title, :points],
+    'Drip::ExamItem' => [:id, :points],
     'Drip::UserTaskRecord' => [:id, :user_id, :percent, :score],
-    'Drip::UserExamRecord' => [:id, :user_answer, :exam_item_id, :correctness],
+    'Drip::UserExamSection' => [:id, :title, :points],
+    'Drip::UserExamItem' => [:id, :difficult, :points, :type, :description, { options: :options_array }, :answers, :comments, :user_answer],
     'Drip::Question' => [:id, :category, :type, :difficult, :points, :description, :options, :answers, :comments],
   }
 
   HASH_INCLUDES = {
-    'Drip::Exam' => [:exam_sections],
+    'Drip::Exam' => [{ sections: :exam_sections }],
     'Drip::ExamSection' => [{ items: :exam_items }],
-    'Drip::UserTaskRecord' => [:user_exam_records],
+    'Drip::UserTaskRecord' => [:exam, { sections: :exam_sections }],
+    'Drip::UserExamSection' => [{ items: :user_exam_items }],
   }
 
   def hash_record(resource, includes_ind: false, attr_hash: HASH_ATTRIBUTES, includes_hash: HASH_INCLUDES)

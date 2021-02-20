@@ -37,7 +37,9 @@ const taskManager = {
   loadExamDetail() {
     const _this = this
     request.get('/exam/startOrContinue', { id: this.__examId }).then((resData) => {
-      _this.__sections = resData.exam_detail.exam_sections;
+      _this.__title = resData.exam_task.exam.title;
+      _this.__description = resData.exam_task.exam.description;
+      _this.__sections = resData.exam_task.sections;
       let secLength = _this.__sections.length;
       _this.__indexArray = new Array(secLength);
       _this.__endingSecIdx = secLength - 1;

@@ -13,11 +13,13 @@ class Drip::ExamsController < Drip::BaseController
     return render_failure_with_messages('参数缺失！') if params[:id].blank?
     @exam = Drip::Exam.active.find_by(id: params[:id])
     return render_failure_with_messages('请求的资源不存在！') if @exam.blank?
-    @exam_task = Drip::UserTaskRecord.unfinished.find_or_create_by!(target: @exam, user: current_user)
-    render_exam_detail_payload
+    @exam_task = Drip::UserTaskRecord.unfinished.find_by(target: @exam, user: current_user)
+    @exam_task = Drip::UserTaskRecord.generate_exam(current_user, @exam) if @exam_task.blank?
+    render_exam_task_detail_payload
   end
 
   def submit_answer
+    return render_failure_with_messages('参数缺失！') if params[:id].blank?
   end
 
   def finish
@@ -33,20 +35,15 @@ class Drip::ExamsController < Drip::BaseController
     }) && return
   end
 
-  def render_exam_detail_payload
+  def render_exam_task_detail_payload
     render_payload({
       success: true,
-      exam_detail: hash_exam_detail,
       exam_task: hash_exam_task
     }) && return
   end
 
   def hash_exam_summary
     ModelSerializer.hash_record(@exam, includes_ind: false)
-  end
-
-  def hash_exam_detail
-    ModelSerializer.hash_record(@exam, includes_ind: true)
   end
 
   def hash_exam_task

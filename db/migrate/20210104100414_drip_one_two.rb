@@ -79,12 +79,26 @@ class DripOneTwo < ActiveRecord::Migration[6.0]
       t.references :exam
       t.string :title
       t.integer :points
-      t.integer :question_count
     end
 
     create_table :drip_exam_items do |t|
       t.references :exam
       t.references :exam_section
+      t.references :question
+      t.integer :points
+    end
+
+    create_table :drip_user_exam_sections do |t|
+      t.references :user_task_record
+      t.references :exam_section
+      t.string :title
+      t.integer :points
+    end
+
+    create_table :drip_user_exam_items do |t|
+      t.references :user_task_record
+      t.references :user_exam_section
+      t.references :exam_item
       t.references :question
       t.integer :difficult
       t.integer :points
@@ -93,17 +107,7 @@ class DripOneTwo < ActiveRecord::Migration[6.0]
       t.text :options
       t.text :answers
       t.text :comments
-    end
-
-    create_table :drip_user_exam_records do |t|
-      t.references :user
-      t.references :user_task_record
-      t.references :exam_item
       t.text :user_answer
-      t.integer :correctness,   default: 0
-      t.integer :score
-
-      t.timestamps
     end
 
     create_table :drip_user_task_records do |t|

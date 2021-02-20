@@ -26,13 +26,7 @@ ActiveRecord::Schema.define(version: 2021_01_04_100414) do
     t.bigint "exam_id"
     t.bigint "exam_section_id"
     t.bigint "question_id"
-    t.integer "difficult"
     t.integer "points"
-    t.integer "type"
-    t.text "description"
-    t.text "options"
-    t.text "answers"
-    t.text "comments"
     t.index ["exam_id"], name: "index_drip_exam_items_on_exam_id"
     t.index ["exam_section_id"], name: "index_drip_exam_items_on_exam_section_id"
     t.index ["question_id"], name: "index_drip_exam_items_on_question_id"
@@ -42,7 +36,6 @@ ActiveRecord::Schema.define(version: 2021_01_04_100414) do
     t.bigint "exam_id"
     t.string "title"
     t.integer "points"
-    t.integer "question_count"
     t.index ["exam_id"], name: "index_drip_exam_sections_on_exam_id"
   end
 
@@ -91,18 +84,32 @@ ActiveRecord::Schema.define(version: 2021_01_04_100414) do
     t.index ["user_id"], name: "index_drip_user_actions_on_user_id"
   end
 
-  create_table "drip_user_exam_records", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
-    t.bigint "user_id"
+  create_table "drip_user_exam_items", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.bigint "user_task_record_id"
+    t.bigint "user_exam_section_id"
     t.bigint "exam_item_id"
+    t.bigint "question_id"
+    t.integer "difficult"
+    t.integer "points"
+    t.integer "type"
+    t.text "description"
+    t.text "options"
+    t.text "answers"
+    t.text "comments"
     t.text "user_answer"
-    t.integer "correctness", default: 0
-    t.integer "score"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["exam_item_id"], name: "index_drip_user_exam_records_on_exam_item_id"
-    t.index ["user_id"], name: "index_drip_user_exam_records_on_user_id"
-    t.index ["user_task_record_id"], name: "index_drip_user_exam_records_on_user_task_record_id"
+    t.index ["exam_item_id"], name: "index_drip_user_exam_items_on_exam_item_id"
+    t.index ["question_id"], name: "index_drip_user_exam_items_on_question_id"
+    t.index ["user_exam_section_id"], name: "index_drip_user_exam_items_on_user_exam_section_id"
+    t.index ["user_task_record_id"], name: "index_drip_user_exam_items_on_user_task_record_id"
+  end
+
+  create_table "drip_user_exam_sections", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+    t.bigint "user_task_record_id"
+    t.bigint "exam_section_id"
+    t.string "title"
+    t.integer "points"
+    t.index ["exam_section_id"], name: "index_drip_user_exam_sections_on_exam_section_id"
+    t.index ["user_task_record_id"], name: "index_drip_user_exam_sections_on_user_task_record_id"
   end
 
   create_table "drip_user_task_records", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|

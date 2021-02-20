@@ -4,7 +4,6 @@ import Cookies from 'js-cookie'
 
 const request = function(loadtip, url, params, method) {
   let token_94 = Cookies.get('token_94');
-  console.log(token_94)
   if(token_94) params.token_94 = token_94;
   let config = {
     // baseURL: '/api',
