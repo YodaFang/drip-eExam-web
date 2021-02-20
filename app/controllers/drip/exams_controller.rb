@@ -19,7 +19,14 @@ class Drip::ExamsController < Drip::BaseController
   end
 
   def submit_answer
-    return render_failure_with_messages('参数缺失！') if params[:id].blank?
+    return render_failure_with_messages('参数缺失！') if params[:item_id].blank? || params[:user_answer].blank?
+    @exam_item = Drip::UserExamItem.find_by(id: params[:item_id])
+    if @exam_item.update(user_answer: params[:user_answer])
+      @exam_item.user_task_record.update(current: params[:item_id])
+      render_success_payload
+    else
+      render_failure_with_messages('答案提交失败！')
+    end
   end
 
   def finish

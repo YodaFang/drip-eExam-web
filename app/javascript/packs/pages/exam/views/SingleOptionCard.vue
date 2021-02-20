@@ -2,7 +2,7 @@
   <v-card-text>
     <span class="text-h6" v-text="content.description"></span>
     <v-radio-group v-model="answer" :disabled="!answerMode">
-      <v-radio v-for="(option, i) in content.options" :key="i" :label="option" :value="i"></v-radio>
+      <v-radio v-for="(option, i) in content.options" :key="i" :label="option" :value="option"></v-radio>
     </v-radio-group>
   </v-card-text>
 </template>
@@ -14,12 +14,15 @@ export default {
   },
   data () {
     return {
-      answer: null,
+      answer: this.content.user_answer,
     }
+  },
+  mounted(){
+    this.$emit('input', this.answer)
   },
   watch: {
     content(newVal, oldVal){
-      this.answer = newVal.userAnswer || null;
+      this.answer = newVal.user_answer;
     },
     answer(newVal, oldVal){
       if(newVal == oldVal) return;

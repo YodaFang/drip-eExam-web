@@ -20,11 +20,11 @@ export default {
   },
   watch: {
     content(newVal, oldVal){
-      this.number = newVal.userAnswer || null;
+      this.number = newVal.user_answer || null;
     },
     answer(newVal, oldVal){
       if(newVal == oldVal) return;
-      this.$emit('input', this.answer)
+      this.$emit('input', this.number);
     },
   },
   methods: {

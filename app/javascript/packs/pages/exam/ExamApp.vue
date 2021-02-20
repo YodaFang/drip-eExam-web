@@ -1,5 +1,6 @@
 <template>
 <v-card style="margin:0 auto;" max-width="1260px">
+<v-app id="task-app">
   <LoadingDialog />
   <AlertSnackbar />
   <SignInUpModal :dialogPersistent="true" />
@@ -23,7 +24,7 @@
       </v-card-actions>
     </v-card>
   </v-overlay>
-  <v-app id="task-app" v-else-if="isLogin && detailsLoaded">
+  <template v-else-if="isLogin && detailsLoaded">
     <v-system-bar app dark color="blue lighten-1">
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
       <v-spacer></v-spacer>
@@ -75,7 +76,8 @@
         <v-progress-circular :rotate="90" :size="85" :width="10" :value="value2" color="purple">{{ value2 }} / 100</v-progress-circular>
       </v-row>
     </v-footer>
-  </v-app>
+  </template>
+</v-app>
 </v-card>
 </template>
 
@@ -103,7 +105,7 @@ export default {
       breadcrumbs: [],
       menuList: [],
       answerMode: true,
-      userAnswer: '',
+      userAnswer: null,
     }
   },
   beforeCreate(){
@@ -172,7 +174,7 @@ export default {
       }
     },
     next(){
-      console.log(this.userAnswer)
+      this.$root.$data.exam.submitAnswer(this.userAnswer);
       if(this.$root.$data.exam.next()){
         this.expandMenu();
         this.setCurrent();

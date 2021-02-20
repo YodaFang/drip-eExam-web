@@ -114,8 +114,9 @@ class DripOneTwo < ActiveRecord::Migration[6.0]
       t.references :user
       t.string :target_type
       t.integer :target_id
-      t.integer :status,   default: 0
+      t.integer :status,    default: 0
       t.integer :percent,   default: 0
+      t.integer :current,   default: 0
       t.integer :score
 
       t.timestamps

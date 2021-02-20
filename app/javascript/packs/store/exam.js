@@ -17,11 +17,6 @@ const taskManager = {
 
   init() {
     this.__examId = Drip.exam_id
-    //this.loadExamSummary();
-  },
-
-  isStarted() {
-    this.__started;
   },
 
   loadExamSummary() {
@@ -39,6 +34,7 @@ const taskManager = {
     request.get('/exam/startOrContinue', { id: this.__examId }).then((resData) => {
       _this.__title = resData.exam_task.exam.title;
       _this.__description = resData.exam_task.exam.description;
+      let current = resData.exam_task.current;
       _this.__sections = resData.exam_task.sections;
       let secLength = _this.__sections.length;
       _this.__indexArray = new Array(secLength);
@@ -49,12 +45,30 @@ const taskManager = {
         _this.__indexArray[i] = new Array(itemLen);
         for(let j=0; j < itemLen; j++){
           _this.__indexArray[i][j] = _this.generateIdx(i, j);
+          if(_this.__sections[i].items[j].id == current){
+            _this.__currentSecIdx = i;
+            _this.__currentItemIdx = j;
+          }
         }
       }
-      _this.__currentSecIdx = 0;
-      _this.__currentItemIdx = 0;
       _this.detailsLoaded = true;
     })
+  },
+
+  submitAnswer(answer) {
+    let currentItem = this.getCurrentItem();
+    if(answer == null || currentItem.user_answer == answer) return;
+    currentItem.user_answer = answer;
+    request.post('exam/submitAnswer', { item_id: currentItem.id, user_answer: answer }).then((resData) => {
+      console.log(resData)
+    })
+  },
+
+  submitExam() {
+  },
+
+  isStarted() {
+    this.__started;
   },
 
   getIndexArray() {
@@ -173,12 +187,6 @@ const taskManager = {
   },
 
   reserve() {
-  },
-
-  submitAnswer(answer) {
-  },
-
-  submitTask() {
   },
 
   setDebug(v) {

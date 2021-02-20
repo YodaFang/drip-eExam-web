@@ -6,7 +6,7 @@ module ModelSerializer
     'Drip::Exam' => [:id, :title, :description, :category, :difficult, :finish_time, :question_count, :user_id],
     'Drip::ExamSection' => [:id, :title, :points],
     'Drip::ExamItem' => [:id, :points],
-    'Drip::UserTaskRecord' => [:id, :user_id, :percent, :score],
+    'Drip::UserTaskRecord' => [:id, :user_id, :percent, :score, :current],
     'Drip::UserExamSection' => [:id, :title, :points],
     'Drip::UserExamItem' => [:id, :difficult, :points, :type, :description, { options: :options_array }, :answers, :comments, :user_answer],
     'Drip::Question' => [:id, :category, :type, :difficult, :points, :description, :options, :answers, :comments],
