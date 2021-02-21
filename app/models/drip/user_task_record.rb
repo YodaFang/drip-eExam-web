@@ -34,4 +34,12 @@ class Drip::UserTaskRecord < Drip::Base
   def exam_sections
     target.is_a?(Drip::Exam) ? Drip::UserExamSection.where(user_task_record_id: id) : []
   end
+
+  def finish!
+    update!(status: 1) unless finished?
+  end
+
+  def finished?
+    status == 1
+  end
 end

@@ -18,7 +18,7 @@ export default {
     }
   },
   mounted(){
-    this.$emit('input', this.answer)
+    this.$emit('input', this.answer);
   },
   watch: {
     content(newVal, oldVal){
@@ -26,7 +26,7 @@ export default {
     },
     answer(newVal, oldVal){
       if(newVal == oldVal) return;
-      this.$emit('input', this.answer)
+      this.$emit('input', this.answer);
     },
   },
   methods: {

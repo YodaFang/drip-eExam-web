@@ -4,22 +4,22 @@
   <LoadingDialog />
   <AlertSnackbar />
   <SignInUpModal :dialogPersistent="true" />
-  <v-overlay v-once v-if="isLogin && summaryLoaded && !detailsLoaded">
+  <v-overlay v-if="isLogin && summaryLoaded && !detailsLoaded">
     <v-card class="mx-auto" max-width="680px" outlined>
       <v-list-item three-line>
         <v-list-item-content>
           <div class="overline mb-4">
-            OVERLINE
+            {{ examTitle }}
           </div>
           <v-list-item-title class="headline mb-1">
-            Headline 5
+            {{ examTitle }}
           </v-list-item-title>
-          <v-list-item-subtitle>Greyhound divisely hello coldly fonwderfully</v-list-item-subtitle>
+          <v-list-item-subtitle>{{ examDesc }}</v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
       <v-card-actions>
         <v-btn outlined block text @click="loadExam()">
-          开 始 测 试
+          开 始 / 继续 测 试
         </v-btn>
       </v-card-actions>
     </v-card>
@@ -34,19 +34,22 @@
     <v-navigation-drawer v-model="drawer" absolute app>
       <v-list expand>
         <v-list-item-group mandatory color="success" v-model="selectedIdx">
-          <template v-once v-for="(m, j) in menuList">
+          <template v-for="(m, j) in menuList">
             <v-list-group no-action eager v-if="m.length > 1" :key="j" :value="true" :id="`menu-group-${j}`">
               <template v-slot:activator>
                 <v-list-item disabled inactive :id="`menu-item-${j}`">
-                  <v-list-item-title><strong>{{menuTitle(j)}}</strong></v-list-item-title>
+                  <v-list-item-title><strong v-text="menuTitle(j)"></strong></v-list-item-title>
                 </v-list-item>
               </template>
               <v-list-item v-for="(idx, i) in m" :key="i" :value="idx" @click="selectItem(j, i)">
-                <v-list-item-title>> {{subMenuTitle(j, i)}}</v-list-item-title>
+                <v-list-item-title>
+                  <v-icon left small color="green">{{ subMenuIcon(j, i) }}</v-icon>
+                  {{ subMenuTitle(j, i) }}
+                </v-list-item-title>
               </v-list-item>
             </v-list-group>
             <v-list-item v-else :key="j" :value="m[0]" @click="selectItem(j, 0)">
-              <v-list-item-title class="ml-4"><strong>{{menuTitle(j)}}</strong></v-list-item-title>
+              <v-list-item-title class="ml-4"><strong v-text="menuTitle(j)" v-pre></strong></v-list-item-title>
             </v-list-item>
           </template>
         </v-list-item-group>
@@ -64,6 +67,7 @@
           <v-row class="m-0">
             <v-col cols="8"><v-btn v-if="hasMore" color="primary" text outlined block @click="next()" ><strong>Next</strong></v-btn></v-col>
             <v-col cols="4"><v-btn v-if="hasBack" text block outlined @click="back()" >Back</v-btn></v-col>
+            <v-col cols="12"><v-btn text block outlined @click="submitExam()"><strong>交 卷</strong></v-btn></v-col>
           </v-row>
         </v-card-actions>
       </v-card>
@@ -106,6 +110,8 @@ export default {
       menuList: [],
       answerMode: true,
       userAnswer: null,
+      examTitle: '',
+      examDesc: '',
     }
   },
   beforeCreate(){
@@ -144,6 +150,12 @@ export default {
         this.$root.$data.exam.loadExamSummary();
       }
     },
+    summaryLoaded(newVal, oldVal){
+      if(this.isLogin && newVal){
+        this.examTitle = this.$root.$data.exam.getTitle();
+        this.examDesc = this.$root.$data.exam.getDescription();
+      }
+    },
     detailsLoaded(newVal, oldVal){
       if(this.isLogin && newVal){
         this.menuList = this.$root.$data.exam.getIndexArray();
@@ -160,6 +172,14 @@ export default {
     },
     subMenuTitle(secIdx, itemIdx){
       return itemIdx + 1;
+    },
+    subMenuIcon(secIdx, itemIdx){
+      let item = this.$root.$data.exam.getItem(secIdx, itemIdx)
+      if(item && item.user_answer && String(item.user_answer).length > 0){
+        return 'mdi-circle-slice-8';
+      } else {
+        return 'mdi-circle-outline';
+      }
     },
     setCurrent(){
       this.selectedIdx = this.$root.$data.exam.getCurrentIdx();
@@ -185,6 +205,9 @@ export default {
         this.expandMenu();
         this.setCurrent();
       }
+    },
+    submitExam(){
+      this.$root.$data.exam.finishExam(this.userAnswer);
     },
     expandMenu(){
       let idx = this.$root.$data.exam.getCurrentSecIdx();

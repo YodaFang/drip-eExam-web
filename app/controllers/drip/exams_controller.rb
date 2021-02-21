@@ -21,6 +21,8 @@ class Drip::ExamsController < Drip::BaseController
   def submit_answer
     return render_failure_with_messages('参数缺失！') if params[:item_id].blank? || params[:user_answer].blank?
     @exam_item = Drip::UserExamItem.find_by(id: params[:item_id])
+    return render_failure_with_messages('考试题目不存在！') if @exam_item.blank? || @exam_item.user_task_record.blank?
+    return render_failure_with_messages('此考卷已完成，无法更新！') if @exam_item.user_task_record.finished?
     if @exam_item.update(user_answer: params[:user_answer])
       @exam_item.user_task_record.update(current: params[:item_id])
       render_success_payload
@@ -30,6 +32,21 @@ class Drip::ExamsController < Drip::BaseController
   end
 
   def finish
+    return render_failure_with_messages('参数缺失！') if params[:id].blank?
+    if params[:item_id].present? && params[:user_answer].present?
+      @exam_item = Drip::UserExamItem.find_by(id: params[:item_id])
+      if @exam_item && @exam_item.update(user_answer: params[:user_answer])
+        @exam_item.user_task_record&.update(current: params[:item_id])
+      else
+        return render_failure_with_messages('答案提交失败！')
+      end
+    end
+    @exam = Drip::Exam.active.find_by(id: params[:id])
+    return render_failure_with_messages('请求的资源不存在！') if @exam.blank?
+    @exam_task = Drip::UserTaskRecord.unfinished.find_by(target: @exam, user: current_user)
+    return render_failure_with_messages('此考卷已完成或者不存在，无法更新！') if @exam_task.blank?
+    @exam_task.finish!
+    render_success_payload
   end
 
   private

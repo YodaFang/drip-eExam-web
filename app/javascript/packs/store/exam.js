@@ -64,7 +64,17 @@ const taskManager = {
     })
   },
 
-  submitExam() {
+  finishExam(answer) {
+    if(!confirm('你确认提交此次测试么？')) return;
+    let params = { id: this.__examId }
+    let currentItem = this.getCurrentItem();
+    if(answer != null && currentItem.user_answer != answer){
+      params.item_id = currentItem.id;
+      params.user_answer = answer;
+    }
+    request.post('exam/finish', params).then((resData) => {
+      console.log(resData)
+    })
   },
 
   isStarted() {
@@ -77,6 +87,14 @@ const taskManager = {
 
   getSection(secIdx) {
     return this.__sections[secIdx];
+  },
+
+  getTitle() {
+    return this.__title;
+  },
+
+  getDescription() {
+    return this.__description;
   },
 
   getCurrentSecIdx() {

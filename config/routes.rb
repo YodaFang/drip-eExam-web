@@ -19,4 +19,5 @@ Rails.application.routes.draw do
   get 'exam/summary', to: 'drip/exams#summary'
   get 'exam/startOrContinue', to: 'drip/exams#start_continue'
   post 'exam/submitAnswer', to: 'drip/exams#submit_answer'
+  post 'exam/finish', to: 'drip/exams#finish'
 end
